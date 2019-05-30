@@ -15,27 +15,25 @@ filetype off
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Vundle setup and plugins
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin("~/.vim/plugins")
+call plug#begin('~/.local/share/nvim/plugged')
 
-Plugin 'VundleVim/Vundle.vim'
-Plugin 'scrooloose/nerdtree'
-Plugin 'vim-airline/vim-airline'
-Plugin 'vim-airline/vim-airline-themes'
-Plugin 'junegunn/fzf'
-Plugin 'junegunn/fzf.vim'
-Plugin 'dracula/vim'
-Plugin 'sheerun/vim-polyglot'
-Plugin 'tpope/vim-surround'
-Plugin 'ludovicchabant/vim-gutentags'
-Plugin 'majutsushi/tagbar'
-Plugin 'connorholyday/vim-snazzy'
-if has('nvim')
-    Plugin 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-endif
+Plug 'scrooloose/nerdtree'
+Plug 'scrooloose/nerdcommenter'
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
+Plug 'junegunn/fzf'
+Plug 'junegunn/fzf.vim'
+Plug 'dracula/vim'
+Plug 'sheerun/vim-polyglot'
+Plug 'tpope/vim-surround'
+Plug 'ludovicchabant/vim-gutentags'
+Plug 'majutsushi/tagbar'
+Plug 'connorholyday/vim-snazzy'
 
+Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+Plug 'deoplete-plugins/deoplete-jedi'
 
-call vundle#end()
+call plug#end()
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "Vim User Interface
@@ -105,6 +103,8 @@ set t_Co=256
 set termguicolors
 colorscheme snazzy
 
+highlight Pmenu guibg=white guifg=black gui=bold
+highlight Comment gui=bold
 highlight Normal guibg= NONE
 highlight CursorLineNr guifg=#66B0FF
 
@@ -157,6 +157,9 @@ set cursorline
 set relativenumber
 set showcmd
 
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Neovim better paste with clipboard
+set clipboard+=unnamedplus
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Motion changes
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -213,8 +216,21 @@ let g:cpp_class_decl_highlight = 1
 
 let g:python_highlight_all = 1
 
-" Turn on Deoplete
+" Turn on Deoplete and settings
 let g:deoplete#enable_at_startup = 1
+call deoplete#custom#source('_',
+            \ 'disabled_syntaxes', ['Comment', 'String'])
+
+let g:deoplete#sources#jedi#statement_length = 70
+let g:deoplete#sources = {}
+set completeopt=longest,menuone
+" Set enter to choose from pop up menu
+inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+inoremap <expr> <TAB> pumvisible() ? '<C-n>' :
+  \ '<C-n><C-r>=pumvisible() ? "\<lt>Down>" : ""<CR>'
+
+inoremap <expr> <S-TAB> pumvisible() ? '<C-p>' :
+  \ '<C-n><C-r>=pumvisible() ? "\<lt>Up>" : ""<CR>'
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Custom functions
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
