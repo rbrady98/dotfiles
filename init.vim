@@ -15,7 +15,7 @@ filetype off
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Vundle setup and plugins
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-call plug#begin('~/.local/share/nvim/plugged')
+call plug#begin('~/.config/nvim/plugged')
 
 Plug 'scrooloose/nerdtree'
 Plug 'scrooloose/nerdcommenter'
@@ -32,6 +32,8 @@ Plug 'connorholyday/vim-snazzy'
 
 Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 Plug 'deoplete-plugins/deoplete-jedi'
+Plug 'w0rp/ale'
+Plug 'ervandew/supertab'
 
 call plug#end()
 
@@ -103,7 +105,7 @@ set t_Co=256
 set termguicolors
 colorscheme snazzy
 
-highlight Pmenu guibg=white guifg=black gui=bold
+highlight Pmenu gui=bold
 highlight Comment gui=bold
 highlight Normal guibg= NONE
 highlight CursorLineNr guifg=#66B0FF
@@ -221,16 +223,20 @@ let g:deoplete#enable_at_startup = 1
 call deoplete#custom#source('_',
             \ 'disabled_syntaxes', ['Comment', 'String'])
 
-let g:deoplete#sources#jedi#statement_length = 70
+let g:deoplete#sources#jedi#statement_length = 25
 let g:deoplete#sources = {}
 set completeopt=longest,menuone
+
 " Set enter to choose from pop up menu
 inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
-inoremap <expr> <TAB> pumvisible() ? '<C-n>' :
-  \ '<C-n><C-r>=pumvisible() ? "\<lt>Down>" : ""<CR>'
+let g:SuperTabDefaultCompletionType = "<c-n>"
 
-inoremap <expr> <S-TAB> pumvisible() ? '<C-p>' :
-  \ '<C-n><C-r>=pumvisible() ? "\<lt>Up>" : ""<CR>'
+nmap <leader>al :ALEToggle<CR>
+let g:ale_lint_on_enter = 0
+let g:ale_lint_on_text_changed = 'never'
+let g:airline#extensions#ale#enabled = 1
+let b:ale_linters = ['flake8']
+
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Custom functions
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
