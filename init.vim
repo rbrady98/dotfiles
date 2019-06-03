@@ -31,6 +31,7 @@ Plug 'majutsushi/tagbar'
 Plug 'connorholyday/vim-snazzy'
 
 Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+Plug 'Shougo/echodoc.vim'
 Plug 'deoplete-plugins/deoplete-jedi'
 Plug 'w0rp/ale'
 Plug 'ervandew/supertab'
@@ -166,6 +167,9 @@ set clipboard+=unnamedplus
 " Motion changes
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 inoremap jj <esc>
+
+nnoremap <TAB> :bnext<cr>
+nnoremap <S-TAB> :bprevious<cr>
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Bracket matching and other
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -194,6 +198,9 @@ set laststatus=2
 set cmdheight=1
 set noshowmode
 let g:airline#extensions#whitespace#enabled = 0
+let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#tabline#buffer_nr_show = 1
+let g:airline#extensions#tabline#buffer_min_count =2
 let g:airline_theme='dracula'
 
 function! AirlineInit() 
@@ -208,8 +215,12 @@ let NERDTreeMinimalUI = 1
 let NERDTreeDirArrows = 1
 let NERDTreeRespectWildIgnore = 1
 
-"Tagbar opening setting
+"Tagbar setting
 map <leader>b :TagbarToggle<CR>
+let g:tagbar_autofocus = 1
+
+" Gutentags directory folder
+let g:gutentags_cache_dir = '~/.config/nvim/tags'
 "FZF settings
 nmap <C-p> :Files<CR>
 
@@ -220,23 +231,37 @@ let g:python_highlight_all = 1
 
 " Turn on Deoplete and settings
 let g:deoplete#enable_at_startup = 1
+let g:deoplete#enable_smart_case = 1
+let g:deoplete#enable_refresh_always = 1
 call deoplete#custom#source('_',
             \ 'disabled_syntaxes', ['Comment', 'String'])
 
-let g:deoplete#sources#jedi#statement_length = 25
-let g:deoplete#sources = {}
+let g:deoplete#max_abbr_width = 30
+let g:deoplete#max_list = 30
+let g:deoplete#sources#jedi#short_types = 1
+let g:deoplete#sources#jedi#statement_length = 50
+call deoplete#custom#source('_', 'matchers',
+\ ['matcher_fuzzy', 'matcher_length'])
+
 set completeopt=longest,menuone
 
 " Set enter to choose from pop up menu
 inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
 let g:SuperTabDefaultCompletionType = "<c-n>"
 
+" Settings for ALE
 nmap <leader>al :ALEToggle<CR>
 let g:ale_lint_on_enter = 0
 let g:ale_lint_on_text_changed = 'never'
 let g:airline#extensions#ale#enabled = 1
-let b:ale_linters = ['flake8']
+let b:ale_linters = {'python': ['flake8']}
+let g:ale_virtualtext_cursor = 1
+let nvim_buf_set_virtual_text = 1
 
+" Settings for echodoc
+let g:echodoc#enable_at_startup = 1
+let g:echodoc#type = 'virtual'
+let g:echodoc#highlight_arguments = 'Operator'
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Custom functions
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
