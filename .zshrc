@@ -1,15 +1,27 @@
 # If you come from bash you might have to change your $PATH.
-export PATH=$HOME/bin:/usr/local/bin:$PATH:.
-export CLASSPATH=$CLASSPATH:.:usr/lib/jvm/java-1.8.0-openjdk/lib
+export PATH=$HOME:$HOME/bin:/usr/local/bin:$HOME/Library/Python/3.7/bin:$PATH:.
 
+# Go path stuff
+export GOPATH=$HOME/go
+export GOBIN=$HOME/go/bin
+export GOROOT=/usr/local/opt/go/libexec
+export PATH=$PATH:$GOPATH:$GOROOT:$GOBIN
+# Stuff for hobo_cm
+export WPE_HOME=~/code/
 # Path to your oh-my-zsh installation.
-  export ZSH="/home/rian/.oh-my-zsh"
+export ZSH="/Users/rian.brady/.oh-my-zsh"
 
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time oh-my-zsh is loaded, in which case,
 # to know which specific one was loaded, run: echo $RANDOM_THEME
 # See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
-ZSH_THEME="muse"
+ZSH_THEME="robbyrussell"
+
+# Python and virtualenvwrapper stuff
+export WORKON_HOME=~/.virtualenvs
+VIRTUALENVWRAPPER_PYTHON='/usr/local/bin/python3'
+source /usr/local/bin/virtualenvwrapper.sh
+
 # Set list of themes to pick from when loading at random
 # Setting this variable when ZSH_THEME=random will cause zsh to load
 # a theme from this variable instead of looking in ~/.oh-my-zsh/themes/
@@ -26,8 +38,14 @@ ZSH_THEME="muse"
 # Uncomment the following line to disable bi-weekly auto-update checks.
 # DISABLE_AUTO_UPDATE="true"
 
+# Uncomment the following line to automatically update without prompting.
+# DISABLE_UPDATE_PROMPT="true"
+
 # Uncomment the following line to change how often to auto-update (in days).
 # export UPDATE_ZSH_DAYS=13
+
+# Uncomment the following line if pasting URLs and other text is messed up.
+# DISABLE_MAGIC_FUNCTIONS=true
 
 # Uncomment the following line to disable colors in ls.
 # DISABLE_LS_COLORS="true"
@@ -63,7 +81,16 @@ ZSH_THEME="muse"
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(
-  git
+    docker
+    docker-compose
+    docker-machine
+    git
+    kubectl
+    django
+    sudo
+    zsh-autosuggestions
+    command-not-found
+    zsh-syntax-highlighting
 )
 
 source $ZSH/oh-my-zsh.sh
@@ -85,8 +112,8 @@ source $ZSH/oh-my-zsh.sh
 # Compilation flags
 # export ARCHFLAGS="-arch x86_64"
 
-# ssh
-# export SSH_KEY_PATH="~/.ssh/rsa_id"
+# Set custom prompt
+source ~/dotfiles/zsh/prompt.zsh
 
 # Set personal aliases, overriding those provided by oh-my-zsh libs,
 # plugins, and themes. Aliases can be placed here, though oh-my-zsh
@@ -94,12 +121,27 @@ source $ZSH/oh-my-zsh.sh
 # For a full list of active aliases, run `alias`.
 #
 # Example aliases
-alias vim="nvim"
+alias vim='nvim'
+alias vi=vim
+alias mkcd='mkcdir'
+alias vimrc='vim ~/.config/nvim/init.vim'
+alias zshrc='vim ~/dotfiles/.zshrc'
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
-#
-eval "$(dircolors ~/.dircolors)" 
 
-export DEVKITPRO=/opt/devkitpro
-export DEVKITARM=/opt/devkitpro/devkitARM
-export DEVKITPPC=/opt/devkitpro/devkitPPC
+# The next line updates PATH for the Google Cloud SDK.
+if [ -f '/Users/rian.brady/google-cloud-sdk/path.zsh.inc' ]; then . '/Users/rian.brady/google-cloud-sdk/path.zsh.inc'; fi
+
+# The next line enables shell command completion for gcloud.
+if [ -f '/Users/rian.brady/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/rian.brady/google-cloud-sdk/completion.zsh.inc'; fi
+
+export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
+autoload -Uz compinit
+compinit
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+mkcdir() {
+    mkdir -p -- "$1" &&
+        cd -P -- "$1"
+}
