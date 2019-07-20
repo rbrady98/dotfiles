@@ -34,7 +34,7 @@ Plug 'chriskempson/base16-vim'
 Plug 'drewtempelmeyer/palenight.vim'
 
 Plug 'fatih/vim-go'
-Plug 'neoclide/coc.nvim', {'do': 'yarn install --frozen-lockfile'}
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'Shougo/echodoc.vim'
 Plug 'w0rp/ale'
 
@@ -221,6 +221,7 @@ function! AirlineInit()
     set statusline^=
 endfunction
 
+let g:airline#extensions#ale#enabled = 1
 autocmd User AirlineAfterTheme call AirlineInit()
 "NERDTree settings
 map <leader>t :NERDTreeToggle<CR>
@@ -304,7 +305,6 @@ let g:ale_linters = {
 
 nnoremap <leader>al :ALEToggle<cr>
 let g:ale_virtualtext_cursor = 1
-let g:airline#extensions#ale#enabled = 1
 highlight ALEErrorSign guifg=red guibg=None
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""

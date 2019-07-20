@@ -6,21 +6,19 @@ export GOPATH=$HOME/go
 export GOBIN=$HOME/go/bin
 export GOROOT=/usr/local/opt/go/libexec
 export PATH=$PATH:$GOPATH:$GOROOT:$GOBIN
+
+# Python --user stuff
+export PATH=$PATH:$HOME/.local/bin
 # Stuff for hobo_cm
 export WPE_HOME=~/code/
 # Path to your oh-my-zsh installation.
-export ZSH="/Users/rian.brady/.oh-my-zsh"
+export ZSH="$HOME/.oh-my-zsh"
 
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time oh-my-zsh is loaded, in which case,
 # to know which specific one was loaded, run: echo $RANDOM_THEME
 # See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
 ZSH_THEME="robbyrussell"
-
-# Python and virtualenvwrapper stuff
-export WORKON_HOME=~/.virtualenvs
-VIRTUALENVWRAPPER_PYTHON='/usr/local/bin/python3'
-source /usr/local/bin/virtualenvwrapper.sh
 
 # Set list of themes to pick from when loading at random
 # Setting this variable when ZSH_THEME=random will cause zsh to load
