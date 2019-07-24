@@ -4,7 +4,6 @@ export PATH=$HOME:$HOME/bin:/usr/local/bin:$HOME/Library/Python/3.7/bin:$PATH:.
 # Go path stuff
 export GOPATH=$HOME/go
 export GOBIN=$HOME/go/bin
-export GOROOT=/usr/local/opt/go/libexec
 export PATH=$PATH:$GOPATH:$GOROOT:$GOBIN
 
 # Python --user stuff
