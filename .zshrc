@@ -1,5 +1,5 @@
 # If you come from bash you might have to change your $PATH.
-export PATH=$HOME:$HOME/bin:/usr/local/bin:$HOME/Library/Python/3.7/bin:$PATH:.
+export PATH=$HOME:/usr/local/bin:$HOME/bin:$HOME/Library/Python/3.7/bin:$PATH:.
 
 # Go path stuff
 export GOPATH=$HOME/go
@@ -8,10 +8,14 @@ export PATH=$PATH:$GOPATH:$GOROOT:$GOBIN
 
 # Python --user stuff
 export PATH=$PATH:$HOME/.local/bin
+export PYTHONPATH=$PYTHONPATH:$HOME/labeler/tf/models/research/object_detection
+export PYTHONPATH=$PYTHONPATH:$HOME/labeler/tf/models/research
+export PYTHONPATH=$PYTHONPATH:$HOME/labeler/tf/models/research/slim
 # Stuff for hobo_cm
 export WPE_HOME=~/code/
 # Path to your oh-my-zsh installation.
 export ZSH="$HOME/.oh-my-zsh"
+export DOCKER_BUILDKIT=1
 
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time oh-my-zsh is loaded, in which case,
@@ -19,6 +23,11 @@ export ZSH="$HOME/.oh-my-zsh"
 # See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
 ZSH_THEME="robbyrussell"
 
+# FZF command
+export FZF_DEFAULT_COMMAND='ag -l --nogroup --nocolor --hidden -g ""'
+
+# Setup for direnv
+eval "$(direnv hook zsh)"
 # Set list of themes to pick from when loading at random
 # Setting this variable when ZSH_THEME=random will cause zsh to load
 # a theme from this variable instead of looking in ~/.oh-my-zsh/themes/
@@ -119,7 +128,7 @@ source ~/dotfiles/zsh/prompt.zsh
 #
 # Example aliases
 alias vim='nvim'
-alias vi=vim
+alias v='nvim'
 alias mkcd='mkcdir'
 alias vimrc='vim ~/.config/nvim/init.vim'
 alias zshrc='vim ~/dotfiles/.zshrc'
@@ -142,3 +151,6 @@ mkcdir() {
     mkdir -p -- "$1" &&
         cd -P -- "$1"
 }
+
+# Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
+export PATH="$PATH:$HOME/.rvm/bin"
