@@ -97,6 +97,7 @@ plugins=(
     zsh-autosuggestions
     command-not-found
     zsh-syntax-highlighting
+    vi-mode
 )
 
 source $ZSH/oh-my-zsh.sh
@@ -121,6 +122,8 @@ source $ZSH/oh-my-zsh.sh
 # Set custom prompt
 source ~/dotfiles/zsh/prompt.zsh
 
+bindkey -v
+export KEYTIMEOUT=1
 # Set personal aliases, overriding those provided by oh-my-zsh libs,
 # plugins, and themes. Aliases can be placed here, though oh-my-zsh
 # users are encouraged to define aliases within the ZSH_CUSTOM folder.

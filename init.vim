@@ -22,7 +22,6 @@ Plug 'junegunn/fzf.vim'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-fugitive'
 Plug 'airblade/vim-gitgutter'
-Plug 'majutsushi/tagbar'
 Plug 'kristijanhusak/vim-hybrid-material'
 Plug 'chriskempson/base16-vim'
 Plug 'drewtempelmeyer/palenight.vim'
@@ -111,7 +110,7 @@ function! s:patch_color_scheme()
     highlight pmenu gui=bold
     highlight comment gui=bold
 
-    " git gutter highlighting
+    "git gutter highlighting
     hi diffadd      gui=none    guifg=none          guibg=chartreuse4
     hi diffchange   gui=none    guifg=grey          guibg=none
     hi diffdelete   gui=bold    guifg=#ff8080       guibg=red3
@@ -175,8 +174,11 @@ set showcmd
 let mapleader = " "
 " paste options from clipboard
 nnoremap <leader>pp "+p
-nnoremap <leader>pp o<esc>"+p
-nnoremap <leader>ppn o<esc>"+p
+nnoremap <leader>pb o<esc>"+p
+nnoremap <leader>pu O<esc>"+p
+
+vnoremap <leader>cp "+y
+
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "" motion changes
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -215,6 +217,8 @@ let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#buffer_nr_show = 1
 let g:airline#extensions#tabline#buffer_min_count =2
 let g:airline_theme='palenight'
+let g:airline_mode_map={}
+let g:airline_mode_map['ic'] = 'INSERT'
 
 function! s:airlineinit()
     let g:airline_section_z = airline#section#create(['%#__accent_bold#%l', '/', '%l%#__restore__#', ' : ' , '%c'])
@@ -223,19 +227,15 @@ endfunction
 
 let g:airline#extensions#ale#enabled = 1
 autocmd user airlineaftertheme call airlineinit()
-"nerdtree settings
-map <leader>t :nerdtreetoggle<cr>
-let nerdtreeminimalui = 1
-let nerdtreedirarrows = 1
-let nerdtreerespectwildignore = 1
 
-"tagbar setting
-map <leader>b :tagbartoggle<cr>
-let g:tagbar_autofocus = 1
+"nerdtree settings
+map <leader>t :NERDTreeToggle<cr>
+let nerdTreeMinimalUI = 1
+let NERDTreeDirArrows = 1
+let NERDTreeRespectWildIgnore = 1
 
 "fzf settings
 nmap <c-p> :Files<cr>
-command! -bang -nargs=* Ag call fzf#vim#ag(<q-args>, {'options': '--delimiter : --nth 4..'}, <bang>0)
 
 " settings for enhanced cpp highlighting
 let g:cpp_class_decl_highlight = 1
@@ -263,34 +263,6 @@ let g:go_highlight_fields = 1
 
 au filetype go nmap <leader>gt :godeclsdir<cr>
 
-let g:tagbar_type_go = {
-        \ 'ctagstype' : 'go',
-        \ 'kinds'     : [
-                \ 'p:package',
-                \ 'i:imports:1',
-                \ 'c:constants',
-                \ 'v:variables',
-                \ 't:types',
-                \ 'n:interfaces',
-                \ 'w:fields',
-                \ 'e:embedded',
-                \ 'm:methods',
-                \ 'r:constructor',
-                \ 'f:functions'
-        \ ],
-        \ 'sro' : '.',
-        \ 'kind2scope' : {
-                \ 't' : 'ctype',
-                \ 'n' : 'ntype'
-        \ },
-        \ 'scope2kind' : {
-                \ 'ctype' : 't',
-                \ 'ntype' : 'n'
-        \ },
-        \ 'ctagsbin'  : 'gotags',
-        \ 'ctagsargs' : '-sort -silent'
-\ }
-
 let g:ale_enabled = 1
 let g:ale_sign_error = '⤫'
 let g:ale_sign_warning = '⚠'
@@ -300,22 +272,27 @@ let g:ale_linters = {
     \ 'python': ['flake8'] ,
     \ 'go': ['golint', 'gopls'] ,
     \ 'javascipt': ['eslint', 'stylelint'],
-    \ 'typescript': ['eslint', 'tslint', 'stylelint'],
+    \ 'typescript': ['eslint', 'tslint', 'tsserver', 'stylelint'],
 \ }
 
 let g:ale_fixers = {
     \ '*': ['remove_trailing_lines', 'trim_whitespace'],
+    \ 'python': ['black'],
 \ }
 
-let g:ale_fix_on_save = 1
+let g:ale_fix_on_save = 0
 let g:ale_lint_on_text_changed = 'always'
-let g:ale_lint_delay = 100
+let g:ale_lint_delay = 250
 
-nnoremap <leader>al :aletoggle<cr>
-nnoremap <leader>aln :alenextwrap<cr>
-nnoremap <leader>alp :alepreviouswrap<cr>
+nnoremap <leader>al :ALEToggle<cr>
+nnoremap <leader>aln :ALENextWrap<cr>
+nnoremap <leader>alp :ALEPreviousWrap<cr>
 
 let g:ale_virtualtext_cursor = 1
+let g:ale_set_highlights = 0
+let g:ale_echo_msg_format = '[%severity%] [%linter%: %code%]  %s'
+highlight link ALEVirtualTextError ErrorMsg
+highlight link ALEVirtualTextWarning Question
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " formatting stuff
 set listchars=trail:•,tab:>-
@@ -379,7 +356,7 @@ function! s:show_documentation()
   if (index(['vim','help'], &filetype) >= 0)
     execute 'h '.expand('<cword>')
   else
-    call cocaction('dohover')
+    call CocAction('doHover')
   endif
 endfunction
 
@@ -391,17 +368,16 @@ nmap <leader>rn <plug>(coc-rename)
 let g:coc_global_extensions = ['coc-solargraph']
 
 " custom filetype indentation for ones that dont work
-"autocmd filetype html setlocal shiftwidth=2 tabstop=2
-"autocmd filetype javascript.jsx setlocal shiftwidth=2 tabstop=2
-"autocmd filetype typescript.tsx setlocal shiftwidth=2 tabstop=2
+set shiftwidth=4
+set tabstop=4
+set expandtab
 
 " better splits
 nnoremap <c-j> <c-w><c-j>
 nnoremap <c-k> <c-w><c-k>
 nnoremap <c-h> <c-w><c-h>
 nnoremap <c-l> <c-w><c-l>
-set splitbelow
-set splitright
+set splitbelow splitright
 
 " neovim specific stuff
 if has('nvim')
@@ -413,18 +389,7 @@ let g:fzf_colors = { 'hl': ['fg', 'keyword'], 'hl+': ['fg', 'keyword'] }
 autocmd! filetype fzf
 autocmd  filetype fzf set noshowmode noruler nonu
 
-if has('nvim') && exists('&winblend') && &termguicolors
-  set winblend=15
-
-  hi normalfloat guibg=none
-  if exists('g:fzf_colors.bg')
-    call remove(g:fzf_colors, 'bg')
-  endif
-
-  if stridx($fzf_default_opts, '--border') == -1
-    let $fzf_default_opts .= ' --border'
-  endif
-
+if has('nvim') && &termguicolors
   function! Floatingfzf()
     let width = float2nr(&columns * 0.8)
     let height = float2nr(&lines * 0.6)
@@ -452,5 +417,6 @@ command! -bang -nargs=* Ag
   \                 <bang>0)
 
 let g:polyglot_disabled = ['go']
+
 autocmd bufnewfile,bufread *.jsx set filetype=javascript.jsx
 autocmd bufnewfile,bufread *.tsx set filetype=typescript.tsx
