@@ -112,9 +112,9 @@ function! s:patch_color_scheme()
 
     "git gutter highlighting
     hi diffadd      gui=none    guifg=none          guibg=chartreuse4
-    hi diffchange   gui=none    guifg=grey          guibg=none
+    hi diffchange   gui=none    guifg=grey          guibg=#4a148c
     hi diffdelete   gui=bold    guifg=#ff8080       guibg=red3
-    hi difftext     gui=none    guifg=gold3          guibg=none
+    hi difftext     gui=none    guifg=none          guibg=#8e24aa
 endfunction
 
 autocmd! colorscheme * call s:patch_color_scheme()

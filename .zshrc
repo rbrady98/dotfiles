@@ -8,9 +8,6 @@ export PATH=$PATH:$GOPATH:$GOROOT:$GOBIN
 
 # Python --user stuff
 export PATH=$PATH:$HOME/.local/bin
-export PYTHONPATH=$PYTHONPATH:$HOME/labeler/tf/models/research/object_detection
-export PYTHONPATH=$PYTHONPATH:$HOME/labeler/tf/models/research
-export PYTHONPATH=$PYTHONPATH:$HOME/labeler/tf/models/research/slim
 # Stuff for hobo_cm
 export WPE_HOME=~/code/
 # Path to your oh-my-zsh installation.
