@@ -1,16 +1,3 @@
-# If you come from bash you might have to change your $PATH.
-export PATH=$HOME:/usr/local/bin:$HOME/bin:$HOME/Library/Python/3.7/bin:$PATH:.
-
-# Go path stuff
-export GOPATH=$HOME/go
-export GOBIN=$HOME/go/bin
-export PATH=$PATH:$GOPATH:$GOROOT:$GOBIN
-
-# Python --user stuff
-export PATH=$PATH:$HOME/.local/bin
-# Stuff for hobo_cm
-export WPE_HOME=~/code/
-# Path to your oh-my-zsh installation.
 export ZSH="$HOME/.oh-my-zsh"
 export DOCKER_BUILDKIT=1
 
@@ -78,10 +65,13 @@ eval "$(direnv hook zsh)"
 # Would you like to use another custom folder than $ZSH/custom?
 # ZSH_CUSTOM=/path/to/new-custom-folder
 
+#Set up GOPATH
+export GOPATH=$HOME/go
+export PATH=$PATH:$GOPATH/bin
 # Which plugins would you like to load?
 # Standard plugins can be found in ~/.oh-my-zsh/plugins/*
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
-# Example format: plugins=(rails git textmate ruby lighthouse)
+# Example format: plugins=(rails git textmate ruby lighthouse
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(
     docker
@@ -135,13 +125,6 @@ alias zshrc='vim ~/dotfiles/.zshrc'
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
-# The next line updates PATH for the Google Cloud SDK.
-if [ -f '/Users/rian.brady/google-cloud-sdk/path.zsh.inc' ]; then . '/Users/rian.brady/google-cloud-sdk/path.zsh.inc'; fi
-
-# The next line enables shell command completion for gcloud.
-if [ -f '/Users/rian.brady/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/rian.brady/google-cloud-sdk/completion.zsh.inc'; fi
-
-export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
 autoload -Uz compinit
 compinit
 
@@ -152,5 +135,4 @@ mkcdir() {
         cd -P -- "$1"
 }
 
-# Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
-export PATH="$PATH:$HOME/.rvm/bin"
+eval $(dircolors ~/dotfiles/gruv.dircolors)

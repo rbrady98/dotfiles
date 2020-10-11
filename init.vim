@@ -6,12 +6,13 @@ filetype off
 
 "Set autoread for a when a file is changed from the outside
 set autoread
+let g:polyglot_disabled = ['go']
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Plug setup and plugins
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-call plug#begin('~/.config/nvim/plugged')
+call plug#begin()
 
 Plug 'scrooloose/nerdtree'
 Plug 'scrooloose/nerdcommenter'
@@ -22,15 +23,11 @@ Plug 'junegunn/fzf.vim'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-fugitive'
 Plug 'airblade/vim-gitgutter'
-Plug 'kristijanhusak/vim-hybrid-material'
 Plug 'chriskempson/base16-vim'
-Plug 'drewtempelmeyer/palenight.vim'
-Plug 'arzg/vim-corvine'
-
+Plug 'gruvbox-community/gruvbox'
 Plug 'fatih/vim-go'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'w0rp/ale'
-Plug 'junegunn/goyo.vim'
 
 " Syntax files
 Plug 'sheerun/vim-polyglot'
@@ -103,22 +100,16 @@ set number
 
 "enable highlighting
 syntax on
-set t_co=256
+
+let g:gruvbox_contrast_dark = 'hard'
+if exists('+termguicolors')
+    let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
+    let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
+endif
+
+let g:gruvbox_invert_selection='0'
+colorscheme gruvbox
 set background=dark
-
-function! s:patch_color_scheme()
-    highlight pmenu gui=bold
-    highlight comment gui=bold
-
-    "git gutter highlighting
-    hi diffadd      gui=none    guifg=none          guibg=chartreuse4
-    hi diffchange   gui=none    guifg=grey          guibg=#4a148c
-    hi diffdelete   gui=bold    guifg=#ff8080       guibg=red3
-    hi difftext     gui=none    guifg=none          guibg=#8e24aa
-endfunction
-
-autocmd! colorscheme * call s:patch_color_scheme()
-colorscheme palenight
 
 if (has("nvim"))
     let $nvim_tui_enable_true_color=1
@@ -126,12 +117,6 @@ endif
 
 if (has("termguicolors"))
     set termguicolors
-endif
-
-" stuff needed for tmux
-if exists('$tmux')
-    let &t_8f = "\<esc>[38;2;%lu;%lu;%lum"
-    let &t_8b = "\<esc>[48;2;%lu;%lu;%lum"
 endif
 
 " set extras for gui mode
@@ -200,11 +185,6 @@ imap <c-j> <esc>/[)}"'\]>]<cr>:nohl<cr>a
 
 nmap <silent> <leader>j :nohl<cr>
 
-" code folding
-set foldmethod=syntax
-set foldnestmax=1
-set foldlevelstart=20
-nmap <leader>f za
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "plugin settings
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -213,20 +193,21 @@ set laststatus=2
 set cmdheight=1
 set noshowmode
 let g:airline#extensions#whitespace#enabled = 0
-let g:airline#extensions#tabline#enabled = 1
-let g:airline#extensions#tabline#buffer_nr_show = 1
-let g:airline#extensions#tabline#buffer_min_count =2
-let g:airline_theme='palenight'
-let g:airline_mode_map={}
-let g:airline_mode_map['ic'] = 'INSERT'
-
-function! s:airlineinit()
-    let g:airline_section_z = airline#section#create(['%#__accent_bold#%l', '/', '%l%#__restore__#', ' : ' , '%c'])
-    set statusline^=
-endfunction
-
 let g:airline#extensions#ale#enabled = 1
-autocmd user airlineaftertheme call airlineinit()
+let g:airline#extensions#coc#enabled = 0
+
+let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#tabline#buffer_min_count = 2
+
+let g:airline#extensions#tabline#formatter = 'unique_tail'
+let g:airline_theme = 'gruvbox'
+let g:airline_powerline_fonts= 1
+
+let g:airline_left_sep = ' '
+let g:airline_right_sep = ' '
+let g:airline#extensions#tabline#left_sep = ' '
+let g:airline#extensions#tabline#left_alt_sep = '|'
+"autocmd user airlineaftertheme call airlineinit()
 
 "nerdtree settings
 map <leader>t :NERDTreeToggle<cr>
@@ -235,7 +216,8 @@ let NERDTreeDirArrows = 1
 let NERDTreeRespectWildIgnore = 1
 
 "fzf settings
-nmap <c-p> :Files<cr>
+nmap <space>f :Files<cr>
+nmap <space>ag :Ag<cr>
 
 " settings for enhanced cpp highlighting
 let g:cpp_class_decl_highlight = 1
@@ -270,7 +252,7 @@ let g:ale_completion_enabled = 0
 let g:ale_linter_aliases = {'jsx': 'css', 'tsx': 'css'}
 let g:ale_linters = {
     \ 'python': ['flake8'] ,
-    \ 'go': ['golint', 'gopls'] ,
+    \ 'go': ['goimports', 'golint', 'gopls'] ,
     \ 'javascipt': ['eslint', 'stylelint'],
     \ 'typescript': ['eslint', 'tslint', 'tsserver', 'stylelint'],
 \ }
@@ -365,7 +347,6 @@ endfunction
 
 " remap for rename current word
 nmap <leader>rn <plug>(coc-rename)
-let g:coc_global_extensions = ['coc-solargraph']
 
 " custom filetype indentation for ones that dont work
 set shiftwidth=4
@@ -385,7 +366,7 @@ if has('nvim')
 endif
 
 " fzf
-let g:fzf_colors = { 'hl': ['fg', 'keyword'], 'hl+': ['fg', 'keyword'] }
+let $FZF_DEFAULT_OPTS='--reverse'
 autocmd! filetype fzf
 autocmd  filetype fzf set noshowmode noruler nonu
 
@@ -416,7 +397,6 @@ command! -bang -nargs=* Ag
   \                         : fzf#vim#with_preview({'options': '--delimiter : --nth 4..'}, 'right:50%:hidden', '?'),
   \                 <bang>0)
 
-let g:polyglot_disabled = ['go']
 
 autocmd bufnewfile,bufread *.jsx set filetype=javascript.jsx
 autocmd bufnewfile,bufread *.tsx set filetype=typescript.tsx
