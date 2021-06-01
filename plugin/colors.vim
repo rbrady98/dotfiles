@@ -5,6 +5,8 @@ endif
 
 set background=dark
 let g:tokyonight_style = "night"
+let g:tokyonight_italic_comments = 0
+let g:tokyonight_italic_keywords = 0
 colorscheme tokyonight
 
 "hi SignColumn guibg=none
