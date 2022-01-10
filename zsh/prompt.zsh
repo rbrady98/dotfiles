@@ -18,7 +18,7 @@ get_username() {
 }
 
 set_prompt() {
-    echo -n "$(directory_name)$(previous_command_error)"
+    echo -n "$(directory_name)$(previous_command_error)$reset_color"
 }
 
 set_rprompt() {
