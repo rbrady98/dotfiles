@@ -9,7 +9,9 @@ local code_actions = null_ls.builtins.code_actions
 
 null_ls.setup({
   sources = {
+    -- Typescript/Javascript settings
     diagnostics.eslint,
     code_actions.eslint,
+    formatting.prettier,
   }
 })

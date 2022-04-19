@@ -27,11 +27,12 @@ keymap("n", "<C-l>", "<C-w>l", opts)
 
 -- Better window navigation --
 keymap("n", "<Tab>", ":bnext<CR>", opts)
-keymap("n", "<S-Tab>", "bprevious<CR>", opts)
+keymap("n", "<S-Tab>", ":bprevious<CR>", opts)
 
 -- Telescope binds
 keymap("n", "<leader>ff", "<cmd>Telescope find_files previewer=false layout_config={height=0.4}<cr>", opts)
 keymap("n", "<leader>fg", "<cmd>Telescope live_grep<cr>", opts)
+keymap("n", "<leader>fw", "<cmd>Telescope grep_string<cr>", opts)
 keymap("n", "<leader>gst", "<cmd>Telescope git_status<cr>", opts)
 
 -- Strip whitespace

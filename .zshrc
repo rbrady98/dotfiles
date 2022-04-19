@@ -1,6 +1,6 @@
 export ZSH="$HOME/.oh-my-zsh"
 
-ZSH_THEME="nicoulaj"
+ZSH_THEME="spaceship"
 
 # FZF command
 export FZF_DEFAULT_COMMAND='rg -l --nogroup --nocolor --hidden -g ""'
@@ -9,6 +9,7 @@ export FZF_DEFAULT_COMMAND='rg -l --nogroup --nocolor --hidden -g ""'
 #export GOPATH=$HOME/go
 #export PATH=$PATH:$GOPATH/bin
 export PATH=$PATH:./node_modules/.bin/
+export PATH=/opt/homebrew/bin:$PATH
 
 # Plugins
 
@@ -43,9 +44,6 @@ source $ZSH/oh-my-zsh.sh
  fi
 
 
-# Set custom prompt
-# source ~/dotfiles/zsh/prompt.zsh
-
 # Set personal aliases, overriding those provided by oh-my-zsh libs,
 # plugins, and themes. Aliases can be placed here, though oh-my-zsh
 # users are encouraged to define aliases within the ZSH_CUSTOM folder.
@@ -60,8 +58,8 @@ alias zshrc='vim ~/dotfiles/.zshrc'
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
-autoload -Uz compinit
-compinit
+# autoload -Uz compinit
+# compinit
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
@@ -74,3 +72,18 @@ if [ -f '/Users/rian.brady/google-cloud-sdk/google-cloud-sdk/path.zsh.inc' ]; th
 
 # The next line enables shell command completion for gcloud.
 if [ -f '/Users/rian.brady/google-cloud-sdk/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/rian.brady/google-cloud-sdk/google-cloud-sdk/completion.zsh.inc'; fi
+
+SPACESHIP_PROMPT_ORDER=(
+  time          # Time stamps section
+  user          # Username section
+  dir           # Current directory section
+  host          # Hostname section
+  git           # Git section (git_branch + git_status)
+  kubectl       # Kubectl context section
+  terraform     # Terraform workspace section
+  exec_time     # Execution time
+  line_sep      # Line break
+  jobs          # Background jobs indicator
+  exit_code     # Exit code section
+  char          # Prompt character
+)

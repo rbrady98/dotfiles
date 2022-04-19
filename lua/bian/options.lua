@@ -32,7 +32,7 @@ local options = {
   termguicolors = true,
   signcolumn = "yes",
   list = true,
-  listchars = { trail = '~' },
+  listchars = { trail = '~', tab = '>-' },
 }
 
 vim.opt.shortmess:append "c"
