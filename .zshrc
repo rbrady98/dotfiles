@@ -30,7 +30,6 @@ export ZSH_DISABLE_COMPFIX=true
 source $ZSH/oh-my-zsh.sh
 
 # User configuration
-
 # export MANPATH="/usr/local/man:$MANPATH"
 
 # You may need to manually set your language environment
@@ -55,6 +54,8 @@ alias v='nvim'
 alias mkcd='mkcdir'
 alias vimrc='vim ~/.config/nvim/init.vim'
 alias zshrc='vim ~/dotfiles/.zshrc'
+alias ktx='kubectx'
+alias kns='kubens'
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
@@ -64,14 +65,8 @@ alias zshrc='vim ~/dotfiles/.zshrc'
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 export NVM_DIR="$HOME/.nvm"
-  [ -s "/usr/local/opt/nvm/nvm.sh" ] && . "/usr/local/opt/nvm/nvm.sh"  # This loads nvm
-  [ -s "/usr/local/opt/nvm/etc/bash_completion.d/nvm" ] && . "/usr/local/opt/nvm/etc/bash_completion.d/nvm"  # This loads nvm bash_completion
-
-# The next line updates PATH for the Google Cloud SDK.
-if [ -f '/Users/rian.brady/google-cloud-sdk/google-cloud-sdk/path.zsh.inc' ]; then . '/Users/rian.brady/google-cloud-sdk/google-cloud-sdk/path.zsh.inc'; fi
-
-# The next line enables shell command completion for gcloud.
-if [ -f '/Users/rian.brady/google-cloud-sdk/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/rian.brady/google-cloud-sdk/google-cloud-sdk/completion.zsh.inc'; fi
+    [ -s "$(brew --prefix)/opt/nvm/nvm.sh" ] && \. "$(brew --prefix)/opt/nvm/nvm.sh" # This loads nvm
+    [ -s "$(brew --prefix)/opt/nvm/etc/bash_completion.d/nvm" ] && \. "$(brew --prefix)/opt/nvm/etc/bash_completion.d/nvm" # This loads nvm bash_completion
 
 SPACESHIP_PROMPT_ORDER=(
   time          # Time stamps section
@@ -87,3 +82,16 @@ SPACESHIP_PROMPT_ORDER=(
   exit_code     # Exit code section
   char          # Prompt character
 )
+
+# Exa overrides for ls
+alias ls='exa'
+alias l='exa -lbF --git --icons --sort=type'
+alias la='exa -lbFa --git --icons --sort=type'
+
+# The next line updates PATH for the Google Cloud SDK.
+if [ -f '/Users/rian.brady/google-cloud-sdk/path.zsh.inc' ]; then . '/Users/rian.brady/google-cloud-sdk/path.zsh.inc'; fi
+
+# The next line enables shell command completion for gcloud.
+if [ -f '/Users/rian.brady/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/rian.brady/google-cloud-sdk/completion.zsh.inc'; fi
+
+eval "$(direnv hook zsh)"
