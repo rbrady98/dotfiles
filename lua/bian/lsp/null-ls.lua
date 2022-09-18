@@ -13,5 +13,8 @@ null_ls.setup({
     diagnostics.eslint,
     code_actions.eslint,
     formatting.prettier,
+    -- Golang
+    formatting.goimports,
+    diagnostics.golangci_lint,
   }
 })

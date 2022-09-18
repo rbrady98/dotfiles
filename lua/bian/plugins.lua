@@ -38,6 +38,7 @@ return packer.startup(function(use)
 
   -- Colorscheme
   use ({ "catppuccin/nvim", as = "catppuccin" })
+  use "EdenEast/nightfox.nvim"
 
   -- cmp plugins
   use "hrsh7th/nvim-cmp" -- Completion Plugin
@@ -63,10 +64,11 @@ return packer.startup(function(use)
 
   -- Telescope
   use "nvim-telescope/telescope.nvim"
+  use { 'nvim-telescope/telescope-ui-select.nvim' }
 
   -- Autopairs
   use "windwp/nvim-autopairs"
-  
+
   -- Comments
   use "numToStr/Comment.nvim"
 
@@ -82,4 +84,24 @@ return packer.startup(function(use)
   -- Gitsigns
   use "lewis6991/gitsigns.nvim"
 
+-- Lightbulb
+  use "kosayoda/nvim-lightbulb"
+
+-- Trouble
+  use {
+    "folke/trouble.nvim",
+    config = function()
+      require("trouble").setup {}
+    end
+  }
+
+  -- Indent Lines
+  use {
+    "lukas-reineke/indent-blankline.nvim",
+    config = function()
+      require("indent_blankline").setup {
+        show_current_context = true,
+      }
+    end
+  }
 end)

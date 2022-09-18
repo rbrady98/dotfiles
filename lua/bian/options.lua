@@ -2,7 +2,7 @@ local options = {
   backup = false,
   clipboard = "unnamedplus",
   cmdheight = 2,
-  completeopt = { "menuone", "noselect" },
+  completeopt = { "menu", "menuone", "noselect" },
   conceallevel = 0,
   fileencoding = "utf-8",
   hlsearch = false,
@@ -33,6 +33,10 @@ local options = {
   signcolumn = "yes",
   list = true,
   listchars = { trail = '~', tab = '>-' },
+  incsearch = true,
+  inccommand = "nosplit",
+  hlsearch = true,
+  laststatus = 3
 }
 
 vim.opt.shortmess:append "c"

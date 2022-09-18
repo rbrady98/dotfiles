@@ -1,25 +1,17 @@
-local ok, lsp_installer = pcall(require, "nvim-lsp-installer")
-if not ok then
-  return
-end
+local lsp_installer = require("nvim-lsp-installer")
 
-local enhance_server_opts = {
-  ["cssmodules_ls"] = function(opts)
-    opts.init_options = {
-      camelCase = false,
-    }
-    end,
+local lspconfig = require("lspconfig")
+
+local servers = { "tsserver", "jsonls", "cssls", "cssmodules_ls", "gopls" }
+
+lsp_installer.setup {
+  ensure_installed = servers
 }
 
-lsp_installer.on_server_ready(function(server)
+for _, server in pairs(servers) do
   local opts = {
     on_attach = require("bian.lsp.handlers").on_attach,
     capabilities = require("bian.lsp.handlers").capabilities,
   }
-
-  if enhance_server_opts[server.name] then
-    enhance_server_opts[server.name](opts)
-  end
-
-  server:setup(opts)
-end)
+  lspconfig[server].setup(opts)
+end

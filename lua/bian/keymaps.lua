@@ -39,7 +39,7 @@ keymap("n", "<leader>gst", "<cmd>Telescope git_status<cr>", opts)
 keymap("n", "<F5>", [[m`:%s/\s\+$//e<cr>``]], opts)
 
 -- Clear search highlight
-keymap("n", "<Space>", ":nohl<cr>", { silent = true })
+keymap("n", "<c-space>", ":nohl<cr>", { silent = true })
 
 -- Insert --
 -- Better window navigation --
@@ -58,3 +58,10 @@ keymap("v", ">", ">gv", opts)
 
 -- NvimTree
 keymap("n", "<leader>e", ":NvimTreeToggle<cr>", opts)
+
+-- Jump to next match centers
+keymap("n", "n", "nzzzv", opts)
+keymap("n", "N", "Nzzzv", opts)
+
+-- Join line keeps cursor at same position
+keymap("n", "J", "mzJ`z", opts)

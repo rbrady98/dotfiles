@@ -6,8 +6,10 @@ ZSH_THEME="spaceship"
 export FZF_DEFAULT_COMMAND='rg -l --nogroup --nocolor --hidden -g ""'
 
 #Put node modules in path
-#export GOPATH=$HOME/go
-#export PATH=$PATH:$GOPATH/bin
+export GOPATH=$HOME/go
+export GOBIN=$GOPATH/bin
+export PATH=$PATH:$GOPATH:$GOBIN
+
 export PATH=$PATH:./node_modules/.bin/
 export PATH=/opt/homebrew/bin:$PATH
 
@@ -95,3 +97,5 @@ if [ -f '/Users/rian.brady/google-cloud-sdk/path.zsh.inc' ]; then . '/Users/rian
 if [ -f '/Users/rian.brady/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/rian.brady/google-cloud-sdk/completion.zsh.inc'; fi
 
 eval "$(direnv hook zsh)"
+
+export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"

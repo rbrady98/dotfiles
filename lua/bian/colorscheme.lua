@@ -1,19 +1,19 @@
-local colorscheme = "catppuccin"
+local colorscheme = "nordfox"
 local catppuccin = require("catppuccin")
 
 catppuccin.setup({
   styles = {
-    functions = "NONE",
-    variables = "NONE",
-    keywords = "NONE",
+    functions = {},
+    variables = {},
+    keywords = {},
   },
   integrations = {
     native_lsp = {
       underlines = {
-        errors = "NONE",
-        hints = "NONE",
-        warnings = "NONE",
-        information = "NONE",
+        errors = {},
+        hints = {},
+        warnings = {},
+        information = {},
       }
     },
   },
@@ -25,3 +25,6 @@ if not ok then
   return
 end
 
+-- Custom color settings
+
+vim.cmd[[highlight WinSeparator guibg=none]]
