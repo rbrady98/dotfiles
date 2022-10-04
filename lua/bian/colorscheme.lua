@@ -1,4 +1,4 @@
-local colorscheme = "nordfox"
+local colorscheme = "carbonfox"
 local catppuccin = require("catppuccin")
 
 catppuccin.setup({

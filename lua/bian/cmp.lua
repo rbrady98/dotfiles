@@ -91,19 +91,11 @@ cmp.setup {
     }),
   }),
   formatting = {
-    fields = { "kind", "abbr", "menu" },
+
     format = function(entry, vim_item)
-      -- Kind icons
-      vim_item.kind = string.format("%s", kind_icons[vim_item.kind])
-      -- vim_item.kind = string.format('%s %s', kind_icons[vim_item.kind], vim_item.kind) -- This concatonates the icons with the name of the item kind
-      vim_item.menu = ({
-        nvim_lsp = "[LSP]",
-        luasnip = "[Snippet]",
-        buffer = "[Buffer]",
-        path = "[Path]",
-      })[entry.source.name]
+      vim_item.kind = string.format('%s %s', kind_icons[vim_item.kind], vim_item.kind)
       return vim_item
-    end,
+    end
   },
   sources = {
     { name = "nvim_lsp" },
@@ -124,3 +116,22 @@ cmp.setup {
     native_menu = false,
   },
 }
+
+-- Custom complete list highlights
+
+local palette = require("nightfox.palette").load("nordfox")
+
+
+-- vim.cmd(string.format('highlight! CmpItemAbbrMatch guibg=NONE guifg=%s', palette.blue.base))
+-- vim.cmd[[highlight! link CmpItemAbbrMatchFuzzy CmpItemAbbrMatch]]
+--
+-- vim.cmd(string.format('highlight! CmpItemKindVariable  guibg=NONE guifg=%s', palette.cyan.bright))
+-- vim.cmd[[highlight! link CmpItemKindInterface CmpItemKindVariable]]
+-- vim.cmd[[highlight! link CmpItemKindText CmpItemKindVariable]]
+--
+-- vim.cmd(string.format('highlight! CmpItemKindFunction guibg=NONE guifg=%s', palette.magenta.bright))
+-- vim.cmd[[highlight! link CmpItemKindMethod CmpItemKindFunction]]
+--
+-- vim.cmd(string.format('highlight! CmpItemKindKeyword guibg=NONE guifg=%s', palette.red.bright))
+-- vim.cmd[[highlight! link CmpItemKindProperty CmpItemKindKeyword]]
+-- vim.cmd[[highlight! link CmpItemKindUnit CmpItemKindKeyword]]
