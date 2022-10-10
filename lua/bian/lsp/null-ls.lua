@@ -14,7 +14,6 @@ null_ls.setup({
     code_actions.eslint,
     formatting.prettier,
     -- Golang
-    formatting.goimports,
     diagnostics.golangci_lint,
   }
 })

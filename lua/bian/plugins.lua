@@ -52,8 +52,13 @@ return packer.startup(function(use)
   use "rafamadriz/friendly-snippets"
 
   -- LSP
-  use "neovim/nvim-lspconfig" -- Enable LSP
-  use "williamboman/nvim-lsp-installer" -- LSP installer
+  use {
+    "williamboman/mason.nvim",
+    "williamboman/mason-lspconfig.nvim",
+    "neovim/nvim-lspconfig",
+    "jayp0521/mason-null-ls.nvim",
+  }
+
   use "jose-elias-alvarez/null-ls.nvim"
 
   -- Treesitter

@@ -8,6 +8,20 @@ if not snip_ok then
   return
 end
 
+function leave_snippet()
+    if
+        ((vim.v.event.old_mode == 's' and vim.v.event.new_mode == 'n') or vim.v.event.old_mode == 'i')
+        and require('luasnip').session.current_nodes[vim.api.nvim_get_current_buf()]
+        and not require('luasnip').session.jump_active
+    then
+        require('luasnip').unlink_current()
+    end
+end
+
+-- stop snippets when you leave to normal mode
+vim.api.nvim_command([[
+    autocmd ModeChanged * lua leave_snippet()
+]])
 
 local check_backspace = function()
   local col = vim.fn.col "." - 1
@@ -116,22 +130,3 @@ cmp.setup {
     native_menu = false,
   },
 }
-
--- Custom complete list highlights
-
-local palette = require("nightfox.palette").load("nordfox")
-
-
--- vim.cmd(string.format('highlight! CmpItemAbbrMatch guibg=NONE guifg=%s', palette.blue.base))
--- vim.cmd[[highlight! link CmpItemAbbrMatchFuzzy CmpItemAbbrMatch]]
---
--- vim.cmd(string.format('highlight! CmpItemKindVariable  guibg=NONE guifg=%s', palette.cyan.bright))
--- vim.cmd[[highlight! link CmpItemKindInterface CmpItemKindVariable]]
--- vim.cmd[[highlight! link CmpItemKindText CmpItemKindVariable]]
---
--- vim.cmd(string.format('highlight! CmpItemKindFunction guibg=NONE guifg=%s', palette.magenta.bright))
--- vim.cmd[[highlight! link CmpItemKindMethod CmpItemKindFunction]]
---
--- vim.cmd(string.format('highlight! CmpItemKindKeyword guibg=NONE guifg=%s', palette.red.bright))
--- vim.cmd[[highlight! link CmpItemKindProperty CmpItemKindKeyword]]
--- vim.cmd[[highlight! link CmpItemKindUnit CmpItemKindKeyword]]

@@ -39,7 +39,7 @@ keymap("n", "<leader>gst", "<cmd>Telescope git_status<cr>", opts)
 keymap("n", "<F5>", [[m`:%s/\s\+$//e<cr>``]], opts)
 
 -- Clear search highlight
-keymap("n", "<c-space>", ":nohl<cr>", { silent = true })
+keymap("n", "<C-space>", ":nohl<cr>", { silent = true })
 
 -- Insert --
 -- Better window navigation --
