@@ -16,6 +16,7 @@ require('mason-lspconfig').setup({
 --
 --
 local lsp_cmds = vim.api.nvim_create_augroup('lsp_cmds', {clear = true})
+local formatting_group = vim.api.nvim_create_augroup('LspFormatting', {})
 
 ---
 -- LSP Keybindings
@@ -51,7 +52,7 @@ local lsp_defaults = {
   flags = {
     debounce_text_changes = 150,
   },
-  capabilities = require('cmp_nvim_lsp').update_capabilities(
+  capabilities = require('cmp_nvim_lsp').default_capabilities(
     vim.lsp.protocol.make_client_capabilities()
   ),
   on_attach = function(client, bufnr)
@@ -73,6 +74,22 @@ lspconfig.util.default_config = vim.tbl_deep_extend(
 require('mason-lspconfig').setup_handlers({
   function(server) -- Default handler
     lspconfig[server].setup{}
+  end,
+  ["gopls"] = function ()
+    lspconfig["gopls"].setup{ on_attach = function(client, bufnr)
+      vim.api.nvim_exec_autocmds('User', {pattern = 'LspAttached'})
+      if client.supports_method("textDocument/formatting") then
+        vim.api.nvim_clear_autocmds({ group = formatting_group, buffer = bufnr})
+        vim.api.nvim_create_autocmd("BufWritePre", {
+          group = formatting_group,
+          buffer = bufnr,
+          callback = function()
+            vim.lsp.buf.format({ bufnr = bufnr })
+          end,
+        })
+      end
+    end,
+    }
   end,
 })
 

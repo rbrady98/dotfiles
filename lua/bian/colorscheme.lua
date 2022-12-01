@@ -1,4 +1,4 @@
-local colorscheme = "carbonfox"
+local colorscheme = "kanagawa"
 local catppuccin = require("catppuccin")
 
 catppuccin.setup({
@@ -26,5 +26,5 @@ if not ok then
 end
 
 -- Custom color settings
-
-vim.cmd[[highlight WinSeparator guibg=none]]
+local colors = require("kanagawa.colors").setup()
+vim.cmd("highlight WinSeparator guibg=none guifg=" .. colors.oniViolet)

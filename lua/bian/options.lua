@@ -36,7 +36,9 @@ local options = {
   incsearch = true,
   inccommand = "nosplit",
   hlsearch = true,
-  laststatus = 3
+  laststatus = 3,
+  cmdheight = 0,
+  mouse = ""
 }
 
 vim.opt.shortmess:append "c"

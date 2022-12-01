@@ -39,6 +39,7 @@ return packer.startup(function(use)
   -- Colorscheme
   use ({ "catppuccin/nvim", as = "catppuccin" })
   use "EdenEast/nightfox.nvim"
+  use "rebelot/kanagawa.nvim"
 
   -- cmp plugins
   use "hrsh7th/nvim-cmp" -- Completion Plugin
@@ -70,6 +71,7 @@ return packer.startup(function(use)
   -- Telescope
   use "nvim-telescope/telescope.nvim"
   use { 'nvim-telescope/telescope-ui-select.nvim' }
+  use {'nvim-telescope/telescope-fzf-native.nvim', run = 'make' }
 
   -- Autopairs
   use "windwp/nvim-autopairs"
@@ -121,4 +123,6 @@ return packer.startup(function(use)
       require("nvim-surround").setup({})
     end
   }
+
+  use 'goolord/alpha-nvim'
 end)
