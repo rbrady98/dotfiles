@@ -23,8 +23,8 @@ vim.api.nvim_create_autocmd('BufWinLeave', {
 })
 
 -- Custom highlights for BarBar
-vim.cmd[[hi! link BufferCurrent Type]]
-vim.cmd[[hi! link BufferCurrentIcon Type]]
-vim.cmd[[hi! link BufferCurrentIndex Type]]
-vim.cmd[[hi! link BufferCurrentMod Error]]
-vim.cmd[[hi! link BufferCurrentSign Type]]
+-- vim.cmd[[hi! link BufferCurrent Type]]
+-- vim.cmd[[hi! link BufferCurrentIcon Type]]
+-- vim.cmd[[hi! link BufferCurrentIndex Type]]
+-- vim.cmd[[hi! link BufferCurrentMod Error]]
+-- vim.cmd[[hi! link BufferCurrentSign Type]]

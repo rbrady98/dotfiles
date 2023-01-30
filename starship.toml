@@ -1,0 +1,57 @@
+format = """
+$username\
+$hostname\
+$directory\
+$git_branch\
+$git_state\
+$git_status\
+$git_metrics\
+$fill\
+$nodejs\
+$golang\
+$cmd_duration $time\
+$line_break\
+$character"""
+
+[fill]
+symbol = " "
+
+[nodejs]
+format = "[$symbol($version )]($style)"
+style = "bold bright-green"
+
+[directory]
+read_only = " "
+truncation_length = 4
+truncate_to_repo = true
+style = "cyan"
+
+[character]
+success_symbol = "[❯](bright-green)"
+error_symbol = "[❯](bright-red)"
+
+[git_branch]
+symbol = " "
+format = "[$symbol$branch]($style) "
+style = "bright-black"
+
+[git_status]
+style = "cyan"
+
+[git_metrics]
+disabled = false
+
+[time]
+disabled = false
+use_12hr = true
+style = "white"
+format = "[$time]($style)  "
+
+[cmd_duration]
+format = "[$duration]($style) "
+style = "yellow"
+
+[golang]
+format = "[$symbol($version)]($style)"
+symbol = " "
+style = "bold bright-cyan"

@@ -1,7 +1,6 @@
 export ZSH="$HOME/.oh-my-zsh"
 
-ZSH_THEME="spaceship"
-
+ZSH_THEME=""
 # FZF command
 export FZF_DEFAULT_COMMAND='rg -l --nogroup --nocolor --hidden -g ""'
 
@@ -21,9 +20,7 @@ plugins=(
     docker-machine
     git
     kubectl
-    django
     sudo
-    zsh-autosuggestions
     command-not-found
     zsh-syntax-highlighting
 )
@@ -53,7 +50,6 @@ source $ZSH/oh-my-zsh.sh
 # Example aliases
 alias vim='nvim'
 alias v='nvim'
-alias mkcd='mkcdir'
 alias vimrc='vim ~/.config/nvim/init.vim'
 alias zshrc='vim ~/dotfiles/.zshrc'
 alias ktx='kubectx'
@@ -70,21 +66,6 @@ export NVM_DIR="$HOME/.nvm"
     [ -s "$(brew --prefix)/opt/nvm/nvm.sh" ] && \. "$(brew --prefix)/opt/nvm/nvm.sh" # This loads nvm
     [ -s "$(brew --prefix)/opt/nvm/etc/bash_completion.d/nvm" ] && \. "$(brew --prefix)/opt/nvm/etc/bash_completion.d/nvm" # This loads nvm bash_completion
 
-SPACESHIP_PROMPT_ORDER=(
-  time          # Time stamps section
-  user          # Username section
-  dir           # Current directory section
-  host          # Hostname section
-  git           # Git section (git_branch + git_status)
-  kubectl       # Kubectl context section
-  terraform     # Terraform workspace section
-  exec_time     # Execution time
-  line_sep      # Line break
-  jobs          # Background jobs indicator
-  exit_code     # Exit code section
-  char          # Prompt character
-)
-
 # Exa overrides for ls
 alias ls='exa'
 alias l='exa -lbF --git --icons --sort=type'
@@ -99,3 +80,9 @@ if [ -f '/Users/rian.brady/google-cloud-sdk/completion.zsh.inc' ]; then . '/User
 eval "$(direnv hook zsh)"
 
 export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
+
+# Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
+export PATH="$PATH:$HOME/.rvm/bin"
+export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES
+
+eval "$(starship init zsh)"

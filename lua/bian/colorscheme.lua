@@ -1,22 +1,7 @@
-local colorscheme = "kanagawa"
-local catppuccin = require("catppuccin")
+local colorscheme = "tokyonight-moon"
 
-catppuccin.setup({
-  styles = {
-    functions = {},
-    variables = {},
-    keywords = {},
-  },
-  integrations = {
-    native_lsp = {
-      underlines = {
-        errors = {},
-        hints = {},
-        warnings = {},
-        information = {},
-      }
-    },
-  },
+require("tokyonight").setup({
+  style = "moon"
 })
 
 local ok, _ = pcall(vim.cmd, "colorscheme " .. colorscheme)
@@ -26,5 +11,5 @@ if not ok then
 end
 
 -- Custom color settings
-local colors = require("kanagawa.colors").setup()
-vim.cmd("highlight WinSeparator guibg=none guifg=" .. colors.oniViolet)
+local colors = require("tokyonight.colors").setup()
+vim.cmd("highlight WinSeparator guibg=none guifg=" .. colors.magenta)
