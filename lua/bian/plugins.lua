@@ -41,6 +41,7 @@ return packer.startup(function(use)
   use "EdenEast/nightfox.nvim"
   use "rebelot/kanagawa.nvim"
   use "folke/tokyonight.nvim"
+  use "dstein64/vim-startuptime"
 
   -- cmp plugins
   use "hrsh7th/nvim-cmp" -- Completion Plugin
