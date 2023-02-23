@@ -4,13 +4,13 @@ return {
     event = { 'BufReadPre', 'BufNewFile' },
     dependencies = {
       'williamboman/mason.nvim',
-      { 'williamboman/mason-lspconfig.nvim', opts = { ensure_installed = { 'sumneko_lua' } } },
+      { 'williamboman/mason-lspconfig.nvim', opts = { ensure_installed = { 'lua_ls' } } },
       'hrsh7th/cmp-nvim-lsp'
     },
     opts = {
       diagnostics = {
         settings = {
-          underline = true,
+          underline = false,
           update_in_insert = false,
           virtual_text = { spacing = 4, prefix='●' },
           severity_sort = true,
@@ -29,7 +29,7 @@ return {
         }
       },
       servers = {
-        sumneko_lua = {
+        lua_ls = {
           settings = {
             Lua = {
               diagnostics = {
@@ -97,6 +97,7 @@ return {
     opts = function ()
       local nls = require('null-ls')
       return {
+        debug = true,
         sources = {
           -- Go
           nls.builtins.formatting.goimports,

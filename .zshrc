@@ -85,4 +85,7 @@ export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
 export PATH="$PATH:$HOME/.rvm/bin"
 export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES
 
+# use for new gcloud auth
+export USE_GKE_GCLOUD_AUTH_PLUGIN=True
+
 eval "$(starship init zsh)"

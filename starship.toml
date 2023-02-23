@@ -52,6 +52,6 @@ format = "[$duration]($style) "
 style = "yellow"
 
 [golang]
-format = "[$symbol($version)]($style)"
+format = "[$symbol($version)]($style) "
 symbol = " "
 style = "bold bright-cyan"
