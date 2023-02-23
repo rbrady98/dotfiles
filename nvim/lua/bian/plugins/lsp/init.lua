@@ -105,7 +105,7 @@ return {
           -- TS/JS
           nls.builtins.diagnostics.eslint_d,
           nls.builtins.code_actions.eslint_d,
-          nls.builtins.formatting.prettier
+          nls.builtins.formatting.eslint_d
         }
       }
     end

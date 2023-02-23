@@ -3,6 +3,7 @@ return {
   event = 'BufRead',
   opts = {
     diagnostic = {
+      on_insert = false,
       show_code_action = false,
       custom_msg = '',
       border_follow = false,
