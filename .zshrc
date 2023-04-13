@@ -88,4 +88,7 @@ export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES
 # use for new gcloud auth
 export USE_GKE_GCLOUD_AUTH_PLUGIN=True
 
+# Unbind C-s
+bindkey -r "^S"
+
 eval "$(starship init zsh)"

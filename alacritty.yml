@@ -29,66 +29,90 @@ font:
   italic:
     style: Italic
 
-  size: 20
+  size: 22
 
-colors:
-  # Default colors
-  primary:
-    background: '0x1e2127'
-    foreground: '0xabb2bf'
+draw_bold_text_with_bright_colors: true
 
-    # Bright and dim foreground colors
-    #
-    # The dimmed foreground color is calculated automatically if it is not present.
-    # If the bright foreground color is not set, or `draw_bold_text_with_bright_colors`
-    # is `false`, the normal foreground color will be used.
-    #dim_foreground: '0x9a9a9a'
-    bright_foreground: '0xe6efff'
+# Colors
+schemes:
+    moonfly: &moonfly
+      # Default colors
+      primary:
+        background:        '#080808'
+        foreground:        '#b2b2b2'
+        bright_foreground: '#eeeeee'
 
-  # Cursor colors
-  #
-  # Colors which should be used to draw the terminal cursor. If these are unset,
-  # the cursor color will be the inverse of the cell color.
-  #cursor:
-  #  text: '0x000000'
-  #  cursor: '0xffffff'
+      # Cursor colors
+      cursor:
+        text:   '#080808'
+        cursor: '#9e9e9e'
 
-  # Normal colors
-  normal:
-    black:   '0x1e2127'
-    red:     '0xe06c75'
-    green:   '0x98c379'
-    yellow:  '0xd19a66'
-    blue:    '0x61afef'
-    magenta: '0xc678dd'
-    cyan:    '0x56b6c2'
-    white:   '0x828791'
+      # Selection colors
+      selection:
+        text:       '#080808'
+        background: '#b2ceee'
 
-  # Bright colors
-  bright:
-    black:   '0x5c6370'
-    red:     '0xe06c75'
-    green:   '0x98c379'
-    yellow:  '0xd19a66'
-    blue:    '0x61afef'
-    magenta: '0xc678dd'
-    cyan:    '0x56b6c2'
-    white:   '0xe6efff'
+      # Normal colors
+      normal:
+        black:   '#323437'
+        red:     '#ff5454'
+        green:   '#8cc85f'
+        yellow:  '#e3c78a'
+        blue:    '#80a0ff'
+        magenta: '#cf87e8'
+        cyan:    '#79dac8'
+        white:   '#c6c6c6'
 
-  # Dim colors
-  #
-  # If the dim colors are not set, they will be calculated automatically based
-  # on the `normal` colors.
-  dim:
-    black:   '0x1e2127'
-    red:     '0xe06c75'
-    green:   '0x98c379'
-    yellow:  '0xd19a66'
-    blue:    '0x61afef'
-    magenta: '0xc678dd'
-    cyan:    '0x56b6c2'
-    white:   '0x828791'
+      # Bright colors
+      bright:
+        black:   '#949494'
+        red:     '#ff5189'
+        green:   '#36c692'
+        yellow:  '#c2c292'
+        blue:    '#74b2ff'
+        magenta: '#ae81ff'
+        cyan:    '#85dc85'
+        white:   '#e4e4e4'
 
+    nightfly: &nightfly
+      primary:
+        background:        '#011627'
+        foreground:        '#acb4c2'
+        bright_foreground: '#eeeeee'
+
+      # Cursor colors
+      cursor:
+        text:   '#080808'
+        cursor: '#9ca1aa'
+
+      # Selection colors
+      selection:
+        text:       '#080808'
+        background: '#b2ceee'
+
+      # Normal colors
+      normal:
+        black:   '#1d3b53'
+        red:     '#fc514e'
+        green:   '#a1cd5e'
+        yellow:  '#e3d18a'
+        blue:    '#82aaff'
+        magenta: '#c792ea'
+        cyan:    '#7fdbca'
+        white:   '#a1aab8'
+
+      # Bright colors
+      bright:
+        black:   '#7c8f8f'
+        red:     '#ff5874'
+        green:   '#21c7a8'
+        yellow:  '#ecc48d'
+        blue:    '#82aaff'
+        magenta: '#ae81ff'
+        cyan:    '#7fdbca'
+        white:   '#d6deeb'
+
+colors: *nightfly
 env:
   TERM: xterm-256color
 
@@ -100,3 +124,4 @@ key_bindings:
   - { key: H,        mods: Alt,     chars: "\x1bh"                       }
   - { key: L,        mods: Alt,     chars: "\x1bl"                       }
   - { key: Space,    mods: Control, chars: "\x00"                        }
+  - { key: L, mods: Control, chars: "\x0c" }

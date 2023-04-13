@@ -25,6 +25,7 @@ local treesitter_opts = {
       enable = true,
       keymaps = {
         ["if"] = "@function.inner",
+        ["af"] = "@function.outer",
       }
     }
   }
