@@ -24,7 +24,7 @@ return {
         signs = {
           Error = " ",
           Warn = " ",
-          Hint = " ",
+          Hint = "󰈅",
           Info = " ",
         }
       },
@@ -105,7 +105,7 @@ return {
           -- TS/JS
           nls.builtins.diagnostics.eslint_d,
           nls.builtins.code_actions.eslint_d,
-          nls.builtins.formatting.eslint_d
+          nls.builtins.formatting.prettier
         }
       }
     end

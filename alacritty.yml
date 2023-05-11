@@ -113,10 +113,9 @@ schemes:
         white:   '#d6deeb'
 
 colors: *nightfly
+
 env:
   TERM: xterm-256color
-
-alt_send_esc: true
 
 key_bindings:
   - { key: J,        mods: Alt,     chars: "\x1bj"                       }

@@ -6,14 +6,16 @@ local treesitter_opts = {
     "ruby",
     "lua",
     "bash",
-    "help",
+    "vimdoc",
     "html",
     "json",
     "markdown",
+    "markdown_inline",
     "yaml",
   },
   highlight = { enable = true },
   indent = { enable = true },
+  autotag = { enable = true },
   incremental_selection = {
     enable = true,
     keymaps = {
