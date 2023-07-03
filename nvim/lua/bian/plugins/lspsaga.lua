@@ -1,6 +1,6 @@
 return {
   'glepnir/lspsaga.nvim',
-  event = 'BufRead',
+  event = 'LspAttach',
   opts = {
     diagnostic = {
       on_insert = false,
@@ -14,6 +14,10 @@ return {
     },
     symbol_in_winbar = { enable = false },
     beacon = { enable = false },
+    ui = {
+      border = 'rounded',
+      kind = require("catppuccin.groups.integrations.lsp_saga").custom_kind()
+    }
   },
   depenendencies = {
     'kyazdani42/nvim-web-devicons',

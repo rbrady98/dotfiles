@@ -8,6 +8,7 @@ function M.on_attach()
 
   bufmap('n', 'K', '<cmd>Lspsaga hover_doc<cr>')
   bufmap('n', 'gd', '<cmd>Lspsaga goto_definition<cr>')
+  bufmap('n', 'gf', '<cmd>Lspsaga lsp_finder<cr>')
   bufmap('n', 'gD', '<cmd>lua vim.lsp.buf.declaration()<cr>')
   bufmap('n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<cr>')
   bufmap('n', 'gt', '<cmd>Lspsaga goto_type_definition<cr>')
@@ -18,7 +19,7 @@ function M.on_attach()
   bufmap('x', '<leader>ca', '<cmd>lua vim.lsp.buf.range_code_action()<cr>')
   bufmap('n', 'gl', '<cmd>Lspsaga show_line_diagnostics<cr>')
   bufmap('n', 'dn', '<cmd>Lspsaga diagnostic_jump_next<cr>')
-  bufmap('n', 'dp', '<cmd>Lspsaga diagnostic_jump_next<cr>')
+  bufmap('n', 'dp', '<cmd>Lspsaga diagnostic_jump_prev<cr>')
   bufmap('n', '<leader>fm', require('bian.plugins.lsp.formatting').lsp_formatting)
 end
 

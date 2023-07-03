@@ -15,7 +15,8 @@ return {
   },
   opts = {
     defaults = {
-      file_ignore_pattern = { "node_modules" },
+      path_display = { "smart" },
+      file_ignore_pattern = { "node_modules/", ".git/" },
       winblend = 15,
       prompt_prefix = " 󰍉  ",
       selection_caret = "  ",
@@ -36,6 +37,23 @@ return {
         width = 0.87,
         height = 0.80,
         preview_cutoff = 100,
+      },
+      vimgrep_arguments = {
+        "rg",
+        "--color=never",
+        "--no-heading",
+        "--with-filename",
+        "--line-number",
+        "--column",
+        "--smart-case",
+        "--hidden",
+        "--glob=!.git/",
+        "--fixed-strings"
+      }
+    },
+    pickers = {
+      find_files = {
+        find_command = { 'rg', '--files', '--hidden', '--iglob', '!.git'}
       }
     },
     extensions = {

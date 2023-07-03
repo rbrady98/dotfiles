@@ -34,6 +34,7 @@ error_symbol = "[❯](bright-red)"
 symbol = " "
 format = "[$symbol$branch]($style) "
 style = "bright-black"
+truncation_length = 20
 
 [git_status]
 style = "cyan"

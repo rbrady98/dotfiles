@@ -4,7 +4,7 @@ return {
     event = { 'BufReadPre', 'BufNewFile' },
     dependencies = {
       'williamboman/mason.nvim',
-      { 'williamboman/mason-lspconfig.nvim', opts = { ensure_installed = { 'lua_ls' } } },
+      { 'williamboman/mason-lspconfig.nvim', opts = { ensure_installed = { 'lua_ls', 'gopls', 'tsserver'  } } },
       'hrsh7th/cmp-nvim-lsp'
     },
     opts = {
@@ -24,7 +24,7 @@ return {
         signs = {
           Error = " ",
           Warn = " ",
-          Hint = "󰈅",
+          Hint = "! ",
           Info = " ",
         }
       },
@@ -38,6 +38,9 @@ return {
 
             }
           }
+        },
+        gopls = {
+          completeUnimported = true,
         }
       }
     },
@@ -74,11 +77,11 @@ return {
         ['gopls'] = function ()
           local settings = {}
           if opts.servers.gopls then
-            settings = opts.servers.gopls.settings
+            settings = opts.servers.gopls
           end
 
           require('lspconfig').gopls.setup({
-            settings = settings,
+            settings = { gopls = settings },
             capabilities = capabilities,
             on_attach = function (client, bufnr)
               require('bian.plugins.lsp.keymaps').on_attach()
@@ -97,7 +100,6 @@ return {
     opts = function ()
       local nls = require('null-ls')
       return {
-        debug = true,
         sources = {
           -- Go
           nls.builtins.formatting.goimports,

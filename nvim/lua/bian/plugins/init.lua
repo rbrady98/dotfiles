@@ -1,14 +1,5 @@
 return {
   {
-    'gruvbox-community/gruvbox',
-    lazy = true,
-  },
-  {
-    'bluz71/vim-moonfly-colors',
-    name = 'moonfly',
-    lazy = true,
-  },
-  {
     'bluz71/vim-nightfly-colors',
     name = 'nightfly',
     lazy = false,
@@ -24,7 +15,23 @@ return {
         group = custom_highlight
       })
 
-      vim.cmd([[colorscheme nightfly]])
+      -- vim.cmd([[colorscheme nightfly]])
     end,
   },
+  {
+    'catppuccin/nvim', name = 'catppuccin',
+    lazy = false,
+    priority = 1000,
+    opts = {
+      integrations = {
+        indent_blankline = {
+          enabled = true
+        }
+      }
+    },
+    config = function(_, opts)
+      require('catppuccin').setup(opts)
+      vim.cmd([[colorscheme catppuccin-mocha]])
+    end
+  }
 }

@@ -23,11 +23,10 @@ keymap('n', '<C-u>', '<C-u>zz')
 keymap('n', 'n', 'nzzzv')
 keymap('n', 'N', 'Nzzzv')
 
-keymap('x', '<leader>p', '\'_dP')
+keymap('x', "<leader>p", [["_dP"]])
 
-keymap('n', '<leader>y', '\'+y')
-keymap('n', '<leader>Y', '\'+Y')
-keymap('v', '<leader>y', '\'+y')
+keymap({'n', 'v'}, '<leader>y', [["+y"]])
+keymap('n', '<leader>Y', [["+Y"]])
 
 keymap('n', 'Q', '<nop>')
 
