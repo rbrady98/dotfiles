@@ -4,8 +4,9 @@ export ZSH="$HOME/.oh-my-zsh"
 export PATH=$PATH:~/go/bin
 
 # FZF command
-export FZF_DEFAULT_COMMAND='rg --hidden -g "!.git"'
-export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND --files """
+RG="rg --no-ignore --hidden -g '!.git/'"
+export FZF_DEFAULT_COMMAND="$RG ''"
+export FZF_CTRL_T_COMMAND="$RG --files """
 
 # Plugins
 plugins=(
@@ -34,6 +35,7 @@ alias la='exa -a --git --icons --sort=type'
 bindkey -r "^S"
 
 eval "$(starship init zsh)"
+eval "$(zoxide init --cmd cd zsh)"
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
@@ -48,3 +50,35 @@ export NVM_DIR="$HOME/.nvm"
 [ -s "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm" ] && \. "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm"  # This loads nvm bash_completion
 
 [[ -s "/Users/bian/.gvm/scripts/gvm" ]] && source "/Users/bian/.gvm/scripts/gvm"
+
+# open tmux session using fzf
+tmux_fzf() {
+  session=$(tmux ls -F "#S" | fzf --height=15)
+  tmux a -t $session
+}
+
+# tmux aliases
+alias tma=tmux_fzf
+alias tmns="tmux new -s"
+
+function nvims() {
+  items=("default" "pluton" "lazy")
+  config=$(printf "%s\n" "${items[@]}" | fzf --prompt=" Neovim Config " --height=~50% --layout=reverse --border --exit-0)
+  if [[ -z $config ]]; then
+    echo "Nothing selected"
+    return 0
+  elif [[ $config == "default" ]]; then
+    config=""
+  fi
+  NVIM_APPNAME=$config nvim $@
+}
+
+alias vp='NVIM_APPNAME=pluton nvim $@'
+
+# pnpm
+export PNPM_HOME="/Users/bian/Library/pnpm"
+case ":$PATH:" in
+  *":$PNPM_HOME:"*) ;;
+  *) export PATH="$PNPM_HOME:$PATH" ;;
+esac
+# pnpm end

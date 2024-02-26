@@ -8,8 +8,6 @@ window:
     x: 5
     y: 5
 
-  opacity: 1
-
   decorations: buttonless
 
 scrolling:
@@ -29,10 +27,67 @@ font:
   italic:
     style: Italic
 
-  size: 22
+  size: 19
 
 # Colors
 schemes:
+  onedark: &onedark
+    primary:
+      background: '0x1e2127'
+      foreground: '0xabb2bf'
+
+      # Bright and dim foreground colors
+      #
+      # The dimmed foreground color is calculated automatically if it is not present.
+      # If the bright foreground color is not set, or `draw_bold_text_with_bright_colors`
+      # is `false`, the normal foreground color will be used.
+      #dim_foreground: '0x9a9a9a'
+    bright_foreground: '0xe6efff'
+
+    # Cursor colors
+    #
+    # Colors which should be used to draw the terminal cursor. If these are unset,
+    # the cursor color will be the inverse of the cell color.
+    #cursor:
+    #  text: '0x000000'
+    #  cursor: '0xffffff'
+
+    # Normal colors
+    normal:
+      black:   '0x1e2127'
+      red:     '0xe06c75'
+      green:   '0x98c379'
+      yellow:  '0xd19a66'
+      blue:    '0x61afef'
+      magenta: '0xc678dd'
+      cyan:    '0x56b6c2'
+      white:   '0x828791'
+
+      # Bright colors
+    bright:
+      black:   '0x5c6370'
+      red:     '0xe06c75'
+      green:   '0x98c379'
+      yellow:  '0xd19a66'
+      blue:    '0x61afef'
+      magenta: '0xc678dd'
+      cyan:    '0x56b6c2'
+      white:   '0xe6efff'
+
+      # Dim colors
+      #
+      # If the dim colors are not set, they will be calculated automatically based
+      # on the `normal` colors.
+    dim:
+      black:   '0x1e2127'
+      red:     '0xe06c75'
+      green:   '0x98c379'
+      yellow:  '0xd19a66'
+      blue:    '0x61afef'
+      magenta: '0xc678dd'
+      cyan:    '0x56b6c2'
+      white:   '0x828791'
+
     moonfly: &moonfly
       # Default colors
       primary:
@@ -40,17 +95,17 @@ schemes:
         foreground:        '#b2b2b2'
         bright_foreground: '#eeeeee'
 
-      # Cursor colors
+        # Cursor colors
       cursor:
         text:   '#080808'
         cursor: '#9e9e9e'
 
-      # Selection colors
+        # Selection colors
       selection:
         text:       '#080808'
         background: '#b2ceee'
 
-      # Normal colors
+        # Normal colors
       normal:
         black:   '#323437'
         red:     '#ff5454'
@@ -61,7 +116,7 @@ schemes:
         cyan:    '#79dac8'
         white:   '#c6c6c6'
 
-      # Bright colors
+        # Bright colors
       bright:
         black:   '#949494'
         red:     '#ff5189'
@@ -72,124 +127,194 @@ schemes:
         cyan:    '#85dc85'
         white:   '#e4e4e4'
 
-    nightfly: &nightfly
-      primary:
-        background:        '#011627'
-        foreground:        '#acb4c2'
-        bright_foreground: '#eeeeee'
+  nightfly: &nightfly
+    primary:
+      background:        '#011627'
+      foreground:        '#acb4c2'
+      bright_foreground: '#eeeeee'
 
       # Cursor colors
-      cursor:
-        text:   '#080808'
-        cursor: '#9ca1aa'
+    cursor:
+      text:   '#080808'
+      cursor: '#9ca1aa'
 
       # Selection colors
-      selection:
-        text:       '#080808'
-        background: '#b2ceee'
+    selection:
+      text:       '#080808'
+      background: '#b2ceee'
 
       # Normal colors
-      normal:
-        black:   '#1d3b53'
-        red:     '#fc514e'
-        green:   '#a1cd5e'
-        yellow:  '#e3d18a'
-        blue:    '#82aaff'
-        magenta: '#c792ea'
-        cyan:    '#7fdbca'
-        white:   '#a1aab8'
+    normal:
+      black:   '#1d3b53'
+      red:     '#fc514e'
+      green:   '#a1cd5e'
+      yellow:  '#e3d18a'
+      blue:    '#82aaff'
+      magenta: '#c792ea'
+      cyan:    '#7fdbca'
+      white:   '#a1aab8'
 
       # Bright colors
-      bright:
-        black:   '#7c8f8f'
-        red:     '#ff5874'
-        green:   '#21c7a8'
-        yellow:  '#ecc48d'
-        blue:    '#82aaff'
-        magenta: '#ae81ff'
-        cyan:    '#7fdbca'
-        white:   '#d6deeb'
+    bright:
+      black:   '#7c8f8f'
+      red:     '#ff5874'
+      green:   '#21c7a8'
+      yellow:  '#ecc48d'
+      blue:    '#82aaff'
+      magenta: '#ae81ff'
+      cyan:    '#7fdbca'
+      white:   '#d6deeb'
 
-    catppuccin: &catppuccin
-      primary:
-          background: "#1E1E2E" # base
-          foreground: "#CDD6F4" # text
-          # Bright and dim foreground colors
-          dim_foreground: "#CDD6F4" # text
-          bright_foreground: "#CDD6F4" # text
+  catppuccin: &catppuccin
+    primary:
+      background: "#16181a" # base
+      foreground: "#CDD6F4" # text
+      # Bright and dim foreground colors
+      dim_foreground: "#CDD6F4" # text
+      bright_foreground: "#CDD6F4" # text
 
       # Cursor colors
-      cursor:
-          text: "#1E1E2E" # base
-          cursor: "#F5E0DC" # rosewater
-      vi_mode_cursor:
-          text: "#1E1E2E" # base
-          cursor: "#B4BEFE" # lavender
+    cursor:
+      text: "#1E1E2E" # base
+      cursor: "#F5E0DC" # rosewater
+    vi_mode_cursor:
+      text: "#1E1E2E" # base
+      cursor: "#B4BEFE" # lavender
 
       # Search colors
-      search:
-          matches:
-              foreground: "#1E1E2E" # base
-              background: "#A6ADC8" # subtext0
-          focused_match:
-              foreground: "#1E1E2E" # base
-              background: "#A6E3A1" # green
-          footer_bar:
-              foreground: "#1E1E2E" # base
-              background: "#A6ADC8" # subtext0
+    search:
+      matches:
+        foreground: "#1E1E2E" # base
+        background: "#A6ADC8" # subtext0
+      focused_match:
+        foreground: "#1E1E2E" # base
+        background: "#A6E3A1" # green
+      footer_bar:
+        foreground: "#1E1E2E" # base
+        background: "#A6ADC8" # subtext0
 
-      # Keyboard regex hints
-      hints:
-          start:
-              foreground: "#1E1E2E" # base
-              background: "#F9E2AF" # yellow
-          end:
-              foreground: "#1E1E2E" # base
-              background: "#A6ADC8" # subtext0
+        # Keyboard regex hints
+    hints:
+      start:
+        foreground: "#1E1E2E" # base
+        background: "#F9E2AF" # yellow
+      end:
+        foreground: "#1E1E2E" # base
+        background: "#A6ADC8" # subtext0
 
-      # Selection colors
-      selection:
-          text: "#1E1E2E" # base
-          background: "#F5E0DC" # rosewater
+        # Selection colors
+    selection:
+      text: "#1E1E2E" # base
+      background: "#F5E0DC" # rosewater
 
       # Normal colors
-      normal:
-          black: "#45475A" # surface1
-          red: "#F38BA8" # red
-          green: "#A6E3A1" # green
-          yellow: "#F9E2AF" # yellow
-          blue: "#89B4FA" # blue
-          magenta: "#F5C2E7" # pink
-          cyan: "#94E2D5" # teal
-          white: "#BAC2DE" # subtext1
+    normal:
+      black: "#45475A" # surface1
+      red: "#F38BA8" # red
+      green: "#A6E3A1" # green
+      yellow: "#F9E2AF" # yellow
+      blue: "#89B4FA" # blue
+      magenta: "#F5C2E7" # pink
+      cyan: "#94E2D5" # teal
+      white: "#BAC2DE" # subtext1
 
       # Bright colors
-      bright:
-          black: "#585B70" # surface2
-          red: "#F38BA8" # red
-          green: "#A6E3A1" # green
-          yellow: "#F9E2AF" # yellow
-          blue: "#89B4FA" # blue
-          magenta: "#F5C2E7" # pink
-          cyan: "#94E2D5" # teal
-          white: "#A6ADC8" # subtext0
+    bright:
+      black: "#585B70" # surface2
+      red: "#F38BA8" # red
+      green: "#A6E3A1" # green
+      yellow: "#F9E2AF" # yellow
+      blue: "#89B4FA" # blue
+      magenta: "#F5C2E7" # pink
+      cyan: "#94E2D5" # teal
+      white: "#A6ADC8" # subtext0
 
       # Dim colors
-      dim:
-          black: "#45475A" # surface1
-          red: "#F38BA8" # red
-          green: "#A6E3A1" # green
-          yellow: "#F9E2AF" # yellow
-          blue: "#89B4FA" # blue
-          magenta: "#F5C2E7" # pink
-          cyan: "#94E2D5" # teal
-          white: "#BAC2DE" # subtext1
+    dim:
+      black: "#45475A" # surface1
+      red: "#F38BA8" # red
+      green: "#A6E3A1" # green
+      yellow: "#F9E2AF" # yellow
+      blue: "#89B4FA" # blue
+      magenta: "#F5C2E7" # pink
+      cyan: "#94E2D5" # teal
+      white: "#BAC2DE" # subtext1
 
-      indexed_colors:
-          - { index: 16, color: "#FAB387" }
-          - { index: 17, color: "#F5E0DC" }
+    indexed_colors:
+      - { index: 16, color: "#FAB387" }
+      - { index: 17, color: "#F5E0DC" }
+  nord: &nord
+    primary:
+      background: "#2e3440"
+      foreground: "#d8dee9"
+      dim_foreground: "#a5abb6"
+    cursor:
+      text: "#2e3440"
+      cursor: "#d8dee9"
+    vi_mode_cursor:
+      text: "#2e3440"
+      cursor: "#d8dee9"
+    selection:
+      text: CellForeground
+      background: "#4c566a"
+    search:
+      matches:
+        foreground: CellBackground
+        background: "#88c0d0"
+    footer_bar:
+      background: "#434c5e"
+      foreground: "#d8dee9"
+    normal:
+      black: "#3b4252"
+      red: "#bf616a"
+      green: "#a3be8c"
+      yellow: "#ebcb8b"
+      blue: "#81a1c1"
+      magenta: "#b48ead"
+      cyan: "#88c0d0"
+      white: "#e5e9f0"
+    bright:
+      black: "#4c566a"
+      red: "#bf616a"
+      green: "#a3be8c"
+      yellow: "#ebcb8b"
+      blue: "#81a1c1"
+      magenta: "#b48ead"
+      cyan: "#8fbcbb"
+      white: "#eceff4"
+    dim:
+      black: "#373e4d"
+      red: "#94545d"
+      green: "#809575"
+      yellow: "#b29e75"
+      blue: "#68809a"
+      magenta: "#8c738c"
+      cyan: "#6d96a5"
+      white: "#aeb3bb"
+  gruvbox: &gruvbox
+    primary:
+      background: '0x1d2021'
+      foreground: '0xd4be98'
+    normal:
+      black:   '0x32302f'
+      red:     '0xea6962'
+      green:   '0xa9b665'
+      yellow:  '0xd8a657'
+      blue:    '0x7daea3'
+      magenta: '0xd3869b'
+      cyan:    '0x89b482'
+      white:   '0xd4be98'
+    bright:
+      black:   '0x32302f'
+      red:     '0xea6962'
+      green:   '0xa9b665'
+      yellow:  '0xd8a657'
+      blue:    '0x7daea3'
+      magenta: '0xd3869b'
+      cyan:    '0x89b482'
+      white:   '0xd4be98'
 
-colors: *catppuccin
+colors: *onedark
 
 env:
   TERM: xterm-256color

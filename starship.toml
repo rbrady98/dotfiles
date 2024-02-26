@@ -9,7 +9,7 @@ $git_metrics\
 $fill\
 $nodejs\
 $golang\
-$cmd_duration $time\
+$cmd_duration\
 $line_break\
 $character"""
 
@@ -42,11 +42,11 @@ style = "cyan"
 [git_metrics]
 disabled = false
 
-[time]
-disabled = false
-use_12hr = true
-style = "white"
-format = "[$time]($style)  "
+# [time]
+# disabled = false
+# use_12hr = true
+# style = "white"
+# format = "[$time]($style)  "
 
 [cmd_duration]
 format = "[$duration]($style) "
