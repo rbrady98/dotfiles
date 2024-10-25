@@ -10,7 +10,7 @@ window:
     x: 5
     y: 5
 
-  decorations: buttonless
+  decorations: None
 
 scrolling:
   history: 10000
@@ -19,7 +19,7 @@ scrolling:
 
 font:
   normal:
-    family: JetBrainsMono Nerd Font Mono
+    family: JetBrainsMono NFM
 
     style: Regular
 
@@ -29,7 +29,7 @@ font:
   italic:
     style: Italic
 
-  size: 19
+  size: 16
 
 # Colors
 schemes:
@@ -316,7 +316,7 @@ schemes:
       cyan:    '0x89b482'
       white:   '0xd4be98'
 
-colors: *onedark
+colors: *moonfly
 
 env:
   TERM: xterm-256color
