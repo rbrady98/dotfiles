@@ -4,6 +4,8 @@ shell:
     - --login
 
 window:
+  option_as_alt: Both
+
   padding:
     x: 5
     y: 5

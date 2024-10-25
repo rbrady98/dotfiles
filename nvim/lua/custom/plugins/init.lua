@@ -28,4 +28,9 @@ return {
       })
     end,
   },
+
+  {
+    'windwp/nvim-ts-autotag',
+    config = true,
+  },
 }

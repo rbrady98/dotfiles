@@ -343,11 +343,14 @@ require('lazy').setup({
         --  All the info you're looking for is in `:help telescope.setup()`
         --
         defaults = {
+          prompt_prefix = ' ',
           vimgrep_arguments = vimgrep_arguments,
+          show_line = false,
         },
         pickers = {
           find_files = {
             find_command = { 'rg', '--files', '--hidden', '--glob', '!**/.git/*' },
+            previewer = false,
           },
         },
         extensions = {
@@ -485,6 +488,9 @@ require('lazy').setup({
           --  See `:help K` for why this keymap
           map('K', vim.lsp.buf.hover, 'Hover Documentation')
 
+          -- map('<C-h>', vim.lsp.buf.signature_help, 'Signature [H]elp')
+          vim.keymap.set('i', '<C-k>', vim.lsp.buf.signature_help, { buffer = event.buf, desc = 'LSP: Signature [H]elp' })
+
           -- WARN: This is not Goto Definition, this is Goto Declaration.
           --  For example, in C this would take you to the header
           map('gD', vim.lsp.buf.declaration, '[G]oto [D]eclaration')
@@ -530,7 +536,9 @@ require('lazy').setup({
           },
         },
 
-        tsserver = {},
+        ts_ls = {},
+
+        jsonls = {},
 
         lua_ls = {
           -- cmd = {...},
@@ -613,6 +621,9 @@ require('lazy').setup({
         javascriptreact = { { 'prettierd', 'prettier' } },
         typescriptreact = { { 'prettierd', 'prettier' } },
         svelte = { { 'prettierd', 'prettier' } },
+        html = { { 'prettierd', 'prettier' } },
+        css = { { 'prettierd', 'prettier' } },
+        markdown = { { 'prettierd', 'prettier' } },
       },
     },
   },
@@ -702,17 +713,37 @@ require('lazy').setup({
     end,
   },
 
+  -- {
+  --   'folke/tokyonight.nvim',
+  --   lazy = false, -- make sure we load this during startup if it is your main colorscheme
+  --   priority = 1000, -- make sure to load this before all the other start plugins
+  --   config = function()
+  --     vim.cmd.colorscheme('tokyonight-moon')
+  --     vim.cmd.hi('Normal guibg=black')
+  --     vim.cmd.hi('SignColumn guibg=none')
+  --     vim.api.nvim_set_hl(0, 'CursorLineNr', { link = '@keyword' })
+  --   end,
+  -- },
+  --
   {
-    'folke/tokyonight.nvim',
-    lazy = false, -- make sure we load this during startup if it is your main colorscheme
-    priority = 1000, -- make sure to load this before all the other start plugins
+    'bluz71/vim-moonfly-colors',
+    name = 'moonfly',
+    lazy = false,
+    priority = 1000,
     config = function()
-      vim.cmd.colorscheme('tokyonight-moon')
-      vim.cmd.hi('Normal guibg=black')
-      vim.cmd.hi('SignColumn guibg=none')
-      vim.api.nvim_set_hl(0, 'CursorLineNr', { link = '@keyword' })
+      vim.cmd.colorscheme('moonfly')
     end,
   },
+
+  -- {
+  --   'EdenEast/nightfox.nvim',
+  --   lazy = false, -- make sure we load this during startup if it is your main colorscheme
+  --   priority = 1000, -- make sure to load this before all the other start plugins
+  --   config = function()
+  --     vim.cmd.colorscheme('nightfox')
+  --     vim.cmd.hi('Normal guibg=black')
+  --   end,
+  -- },
 
   -- Highlight todo, notes, etc in comments
   { 'folke/todo-comments.nvim', dependencies = { 'nvim-lua/plenary.nvim' }, opts = { signs = false } },
