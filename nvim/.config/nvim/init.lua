@@ -158,8 +158,6 @@ require('lazy').setup({
         end,
       },
       { 'nvim-telescope/telescope-ui-select.nvim' },
-
-      { 'nvim-tree/nvim-web-devicons' },
     },
     config = function()
       local telescopeConfig = require('telescope.config')
@@ -620,6 +618,8 @@ require('lazy').setup({
       require('mini.tabline').setup({ tabpage_section = 'none' })
 
       require('mini.pairs').setup({})
+      require('mini.icons').setup({})
+      MiniIcons.mock_nvim_web_devicons()
     end,
   },
 
