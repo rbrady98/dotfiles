@@ -5,6 +5,7 @@
 return {
   {
     'nvim-tree/nvim-tree.lua',
+    dependencies = { 'echasnovski/mini.nvim' },
     config = function()
       require('nvim-tree').setup()
 
