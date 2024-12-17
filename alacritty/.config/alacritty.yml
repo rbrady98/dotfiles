@@ -315,8 +315,33 @@ schemes:
       magenta: '0xd3869b'
       cyan:    '0x89b482'
       white:   '0xd4be98'
+    tokyonight: &tokyonight
+      primary:
+        background: '#222436'
+        foreground: '#c8d3f5'
+      normal:
+        black: '#1b1d2b'
+        red: '#ff757f'
+        green: '#c3e88d'
+        yellow: '#ffc777'
+        blue: '#82aaff'
+        magenta: '#c099ff'
+        cyan: '#86e1fc'
+        white: '#828bb8'
+      bright:
+        black: '#444a73'
+        red: '#ff8d94'
+        green: '#c7fb6d'
+        yellow: '#ffd8ab'
+        blue: '#9ab8ff'
+        magenta: '#caabff'
+        cyan: '#b2ebff'
+        white: '#c8d3f5'
+      indexed_colors:
+        - { index: 16, color: "#ff966c" }
+        - { index: 17, color: "#c53b53" }
 
-colors: *moonfly
+colors: *tokyonight
 
 env:
   TERM: xterm-256color

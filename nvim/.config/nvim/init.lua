@@ -716,37 +716,15 @@ require('lazy').setup({
     end,
   },
 
-  -- {
-  --   'folke/tokyonight.nvim',
-  --   lazy = false, -- make sure we load this during startup if it is your main colorscheme
-  --   priority = 1000, -- make sure to load this before all the other start plugins
-  --   config = function()
-  --     vim.cmd.colorscheme('tokyonight-moon')
-  --     vim.cmd.hi('Normal guibg=black')
-  --     vim.cmd.hi('SignColumn guibg=none')
-  --     vim.api.nvim_set_hl(0, 'CursorLineNr', { link = '@keyword' })
-  --   end,
-  -- },
-  --
   {
-    'bluz71/vim-moonfly-colors',
-    name = 'moonfly',
-    lazy = false,
-    priority = 1000,
+    'folke/tokyonight.nvim',
+    lazy = false, -- make sure we load this during startup if it is your main colorscheme
+    priority = 1000, -- make sure to load this before all the other start plugins
     config = function()
-      vim.cmd.colorscheme('moonfly')
+      vim.cmd.colorscheme('tokyonight-moon')
+      vim.api.nvim_set_hl(0, 'CursorLineNr', { link = '@keyword' })
     end,
   },
-
-  -- {
-  --   'EdenEast/nightfox.nvim',
-  --   lazy = false, -- make sure we load this during startup if it is your main colorscheme
-  --   priority = 1000, -- make sure to load this before all the other start plugins
-  --   config = function()
-  --     vim.cmd.colorscheme('nightfox')
-  --     vim.cmd.hi('Normal guibg=black')
-  --   end,
-  -- },
 
   -- Highlight todo, notes, etc in comments
   { 'folke/todo-comments.nvim', dependencies = { 'nvim-lua/plenary.nvim' }, opts = { signs = false } },
