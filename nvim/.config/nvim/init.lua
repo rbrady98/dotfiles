@@ -118,8 +118,13 @@ require('lazy').setup({
       on_attach = function(_)
         local gitsigns = require('gitsigns')
 
-        vim.keymap.set('n', ']h', gitsigns.next_hunk, { desc = 'Go to next [H]unk' })
-        vim.keymap.set('n', '[h', gitsigns.prev_hunk, { desc = 'Go to previous [H]unk' })
+        vim.keymap.set('n', ']h', function()
+          gitsigns.nav_hunk('next')
+        end, { desc = 'Go to next [H]unk' })
+
+        vim.keymap.set('n', '[h', function()
+          gitsigns.nav_hunk('prev')
+        end, { desc = 'Go to previous [H]unk' })
       end,
     },
   },
@@ -142,92 +147,83 @@ require('lazy').setup({
     end,
   },
 
-  { -- Fuzzy Finder (files, lsp, etc)
-    'nvim-telescope/telescope.nvim',
-    event = 'VeryLazy',
-    branch = '0.1.x',
-    dependencies = {
-      'nvim-lua/plenary.nvim',
-      {
-        'nvim-telescope/telescope-fzf-native.nvim',
+  {
+    'ibhagwan/fzf-lua',
+    cmd = 'FzfLua',
+    opts = function(_, _)
+      local config = require('fzf-lua.config')
+      local actions = require('fzf-lua.actions')
 
-        build = 'make',
+      -- Quickfix
+      config.defaults.keymap.fzf['ctrl-q'] = 'select-all+accept'
+      config.defaults.keymap.fzf['ctrl-u'] = 'half-page-up'
+      config.defaults.keymap.fzf['ctrl-d'] = 'half-page-down'
+      config.defaults.keymap.fzf['ctrl-x'] = 'jump'
+      config.defaults.keymap.fzf['ctrl-f'] = 'preview-page-down'
+      config.defaults.keymap.fzf['ctrl-b'] = 'preview-page-up'
+      config.defaults.keymap.builtin['<c-f>'] = 'preview-page-down'
+      config.defaults.keymap.builtin['<c-b>'] = 'preview-page-up'
 
-        cond = function()
-          return vim.fn.executable('make') == 1
-        end,
-      },
-      { 'nvim-telescope/telescope-ui-select.nvim' },
-    },
-    config = function()
-      local telescopeConfig = require('telescope.config')
-      local vimgrep_arguments = { unpack(telescopeConfig.values.vimgrep_arguments) }
-
-      -- I want to search in hidden/dot files.
-      table.insert(vimgrep_arguments, '--hidden')
-      -- I don't want to search in the `.git` directory.
-      table.insert(vimgrep_arguments, '--glob')
-      table.insert(vimgrep_arguments, '!**/.git/*')
-
-      require('telescope').setup({
+      return {
+        fzf_colors = true,
+        fzf_opts = {
+          ['--no-scrollbar'] = true,
+        },
         defaults = {
-          prompt_prefix = ' ',
-          vimgrep_arguments = vimgrep_arguments,
-          show_line = false,
+          -- formatter = "path.filename_first",
+          formatter = 'path.dirname_first',
+          file_icons = 'mini',
         },
-        pickers = {
-          find_files = {
-            find_command = { 'rg', '--files', '--hidden', '--glob', '!**/.git/*' },
-            previewer = false,
+        lsp = {
+          jump_to_single_result = true,
+          jump_to_single_result_action = actions.file_edit,
+        },
+        previewers = {
+          builtin = {
+            extensions = {
+              ['svg'] = { 'chafa', '{file}' },
+              ['png'] = { 'chafa', '{file}' },
+              ['jpg'] = { 'chafa', '{file}' },
+              ['jpeg'] = { 'chafa', '{file}' },
+              ['gif'] = { 'chafa', '{file}' },
+              ['webp'] = { 'chafa', '{file}' },
+            },
           },
         },
-        extensions = {
-          ['ui-select'] = {
-            require('telescope.themes').get_dropdown(),
+        winopts = {
+          width = 0.8,
+          height = 0.8,
+          row = 0.5,
+          col = 0.5,
+          preview = {
+            scrollchars = { '┃', '' },
           },
         },
-      })
-
-      -- Enable telescope extensions, if they are installed
-      pcall(require('telescope').load_extension, 'fzf')
-      pcall(require('telescope').load_extension, 'ui-select')
-
-      -- See `:help telescope.builtin`
-      local builtin = require('telescope.builtin')
-      vim.keymap.set('n', '<leader>sh', builtin.help_tags, { desc = '[S]earch [H]elp' })
-      vim.keymap.set('n', '<leader>sk', builtin.keymaps, { desc = '[S]earch [K]eymaps' })
-      vim.keymap.set('n', '<leader>sf', builtin.find_files, { desc = '[S]earch [F]iles' })
-      vim.keymap.set('n', '<leader>sw', builtin.grep_string, { desc = '[S]earch current [W]ord' })
-      vim.keymap.set('n', '<leader>sg', builtin.live_grep, { desc = '[S]earch by [G]rep' })
-      vim.keymap.set('n', '<leader>sd', builtin.diagnostics, { desc = '[S]earch [D]iagnostics' })
-      vim.keymap.set('n', '<leader>sr', builtin.resume, { desc = '[S]earch [R]esume' })
-      vim.keymap.set('n', '<leader>s.', builtin.oldfiles, { desc = '[S]earch Recent Files ("." for repeat)' })
-      vim.keymap.set('n', '<leader><leader>', builtin.buffers, { desc = '[ ] Find existing buffers' })
-      vim.keymap.set('n', '<leader>ss', builtin.git_status, { desc = '[S]earch Git [S]tatus' })
-
-      -- Slightly advanced example of overriding default behavior and theme
-      vim.keymap.set('n', '<leader>/', function()
-        -- You can pass additional configuration to telescope to change theme, layout, etc.
-        builtin.current_buffer_fuzzy_find(require('telescope.themes').get_dropdown({
-          winblend = 10,
-          previewer = false,
-        }))
-      end, { desc = '[/] Fuzzily search in current buffer' })
-
-      -- Also possible to pass additional configuration options.
-      --  See `:help telescope.builtin.live_grep()` for information about particular keys
-      vim.keymap.set('n', '<leader>s/', function()
-        builtin.live_grep({
-          grep_open_files = true,
-          prompt_title = 'Live Grep in Open Files',
-        })
-      end, { desc = '[S]earch [/] in Open Files' })
-
-      -- Shortcut for searching your neovim configuration files
-      vim.keymap.set('n', '<leader>sn', function()
-        builtin.find_files({ cwd = vim.fn.stdpath('config') })
-      end, { desc = '[S]earch [N]eovim files' })
+        files = {
+          cwd_prompt = true,
+          winopts = { height = 0.30, width = 0.70, preview = { hidden = 'hidden' } },
+          actions = {
+            ['alt-i'] = { actions.toggle_ignore },
+            ['alt-h'] = { actions.toggle_hidden },
+          },
+        },
+        grep = {
+          rg_opts = '--column --line-number --no-heading --hidden --color=always -g "!.git" --smart-case --max-columns=4096 -e ',
+          actions = {
+            ['alt-i'] = { actions.toggle_ignore },
+            ['alt-h'] = { actions.toggle_hidden },
+          },
+        },
+      }
     end,
+    keys = {
+      { '<leader>fb', '<cmd>FzfLua buffers sort_mru=true sort_lastused=true<cr>', desc = 'Buffers' },
+      { '<leader>ff', '<cmd>FzfLua files<cr>', desc = 'Find Files' },
+      { '<leader>fg', '<cmd>FzfLua git_files<cr>', desc = 'Find Files (git-files)' },
+      { '<leader>fr', '<cmd>FzfLua oldfiles<cr>', desc = 'Recent' },
+      { '<leader>gs', '<cmd>FzfLua git_status<CR>', desc = 'Status' },
+      { '<leader>sg', '<cmd>FzfLua live_grep<CR>', desc = 'Status' },
+    },
   },
 
   { -- LSP Configuration & Plugins
@@ -240,7 +236,6 @@ require('lazy').setup({
       'saghen/blink.cmp',
 
       -- Useful status updates for LSP.
-      -- NOTE: `opts = {}` is the same as calling `require('fidget').setup({})`
       { 'j-hui/fidget.nvim', opts = {} },
     },
     config = function()
@@ -254,27 +249,19 @@ require('lazy').setup({
           -- Jump to the definition of the word under your cursor.
           --  This is where a variable was first declared, or where a function is defined, etc.
           --  To jump back, press <C-T>.
-          map('gd', require('telescope.builtin').lsp_definitions, '[G]oto [D]efinition')
+          map('gd', require('fzf-lua').lsp_definitions, '[G]oto [D]efinition')
 
           -- Find references for the word under your cursor.
-          map('gr', require('telescope.builtin').lsp_references, '[G]oto [R]eferences')
+          map('gr', require('fzf-lua').lsp_references, '[G]oto [R]eferences')
 
           -- Jump to the implementation of the word under your cursor.
           --  Useful when your language has ways of declaring types without an actual implementation.
-          map('gI', require('telescope.builtin').lsp_implementations, '[G]oto [I]mplementation')
+          map('gI', require('fzf-lua').lsp_implementations, '[G]oto [I]mplementation')
 
           -- Jump to the type of the word under your cursor.
           --  Useful when you're not sure what type a variable is and you want to see
           --  the definition of its *type*, not where it was *defined*.
-          map('<leader>D', require('telescope.builtin').lsp_type_definitions, 'Type [D]efinition')
-
-          -- Fuzzy find all the symbols in your current document.
-          --  Symbols are things like variables, functions, types, etc.
-          map('<leader>ds', require('telescope.builtin').lsp_document_symbols, '[D]ocument [S]ymbols')
-
-          -- Fuzzy find all the symbols in your current workspace
-          --  Similar to document symbols, except searches over your whole project.
-          map('<leader>ws', require('telescope.builtin').lsp_dynamic_workspace_symbols, '[W]orkspace [S]ymbols')
+          map('<leader>D', require('fzf-lua').lsp_typedefs, 'Type [D]efinition')
 
           -- Rename the variable under your cursor
           --  Most Language Servers support renaming across files, etc.
@@ -282,7 +269,7 @@ require('lazy').setup({
 
           -- Execute a code action, usually your cursor needs to be on top of an error
           -- or a suggestion from your LSP for this to activate.
-          map('<leader>ca', vim.lsp.buf.code_action, '[C]ode [A]ction')
+          map('<leader>ca', require('fzf-lua').lsp_code_actions, '[C]ode [A]ction')
 
           -- Opens a popup that displays documentation about the word under your cursor
           --  See `:help K` for why this keymap
@@ -293,7 +280,7 @@ require('lazy').setup({
 
           -- WARN: This is not Goto Definition, this is Goto Declaration.
           --  For example, in C this would take you to the header
-          map('gD', vim.lsp.buf.declaration, '[G]oto [D]eclaration')
+          map('gD', require('fzf-lua').lsp_declarations, '[G]oto [D]eclaration')
 
           local client = vim.lsp.get_client_by_id(event.data.client_id)
           if client and client.server_capabilities.documentHighlightProvider then
@@ -387,17 +374,14 @@ require('lazy').setup({
     'stevearc/conform.nvim',
     opts = {
       notify_on_error = false,
-      format_on_save = {
-        timeout_ms = 500,
-        lsp_fallback = true,
-      },
+      format_on_save = function(bufnr)
+        if vim.g.disable_autoformat or vim.b[bufnr].disable_autoformat then
+          return
+        end
+        return { timeout_ms = 500, lsp_format = 'fallback' }
+      end,
       formatters_by_ft = {
         lua = { 'stylua' },
-        -- Conform can also run multiple formatters sequentially
-        -- python = { "isort", "black" },
-        --
-        -- You can use a sub-list to tell conform to run *until* a formatter
-        -- is found.
         json = { { 'prettierd', 'prettier' } },
         javascript = { { 'prettierd', 'prettier' } },
         typescript = { { 'prettierd', 'prettier' } },
@@ -411,144 +395,41 @@ require('lazy').setup({
     },
   },
 
-  -- { -- Autocompletion
-  --   'hrsh7th/nvim-cmp',
-  --   event = 'InsertEnter',
-  --   dependencies = {
-  --     -- Snippet Engine & its associated nvim-cmp source
-  --     {
-  --       'L3MON4D3/LuaSnip',
-  --       build = (function()
-  --         -- Build Step is needed for regex support in snippets
-  --         -- This step is not supported in many windows environments
-  --         -- Remove the below condition to re-enable on windows
-  --         if vim.fn.has('win32') == 1 or vim.fn.executable('make') == 0 then
-  --           return
-  --         end
-  --         return 'make install_jsregexp'
-  --       end)(),
-  --     },
-  --     'saadparwaiz1/cmp_luasnip',
-  --     'hrsh7th/cmp-nvim-lsp',
-  --     'hrsh7th/cmp-path',
-  --
-  --     -- 'rafamadriz/friendly-snippets',
-  --   },
-  --   config = function()
-  --     -- See `:help cmp`
-  --     local cmp = require('cmp')
-  --     local luasnip = require('luasnip')
-  --     luasnip.config.setup({})
-  --
-  --     cmp.setup({
-  --       snippet = {
-  --         expand = function(args)
-  --           luasnip.lsp_expand(args.body)
-  --         end,
-  --       },
-  --       completion = { completeopt = 'menu,menuone,noinsert' },
-  --
-  --       -- For an understanding of why these mappings were
-  --       -- chosen, you will need to read `:help ins-completion`
-  --       --
-  --       -- No, but seriously. Please read `:help ins-completion`, it is really good!
-  --       mapping = cmp.mapping.preset.insert({
-  --         -- Select the [n]ext item
-  --         ['<C-n>'] = cmp.mapping.select_next_item(),
-  --         -- Select the [p]revious item
-  --         ['<C-p>'] = cmp.mapping.select_prev_item(),
-  --
-  --         -- Accept ([y]es) the completion.
-  --         --  This will auto-import if your LSP supports it.
-  --         --  This will expand snippets if the LSP sent a snippet.
-  --         ['<CR>'] = cmp.mapping.confirm({ select = true }),
-  --
-  --         -- Manually trigger a completion from nvim-cmp.
-  --         --  Generally you don't need this, because nvim-cmp will display
-  --         --  completions whenever it has completion options available.
-  --         ['<C-Space>'] = cmp.mapping.complete({}),
-  --
-  --         -- Think of <c-l> as moving to the right of your snippet expansion.
-  --         --  So if you have a snippet that's like:
-  --         --  function $name($args)
-  --         --    $body
-  --         --  end
-  --         --
-  --         -- <c-l> will move you to the right of each of the expansion locations.
-  --         -- <c-h> is similar, except moving you backwards.
-  --         ['<C-l>'] = cmp.mapping(function()
-  --           if luasnip.expand_or_locally_jumpable() then
-  --             luasnip.expand_or_jump()
-  --           end
-  --         end, { 'i', 's' }),
-  --         ['<C-h>'] = cmp.mapping(function()
-  --           if luasnip.locally_jumpable(-1) then
-  --             luasnip.jump(-1)
-  --           end
-  --         end, { 'i', 's' }),
-  --       }),
-  --       sources = {
-  --         { name = 'nvim_lsp' },
-  --         { name = 'luasnip' },
-  --         { name = 'path' },
-  --       },
-  --     })
-  --   end,
-  -- },
   {
     'saghen/blink.cmp',
     lazy = false, -- lazy loading handled internally
-    -- optional: provides snippets for the snippet source
     dependencies = 'rafamadriz/friendly-snippets',
-
-    -- use a release tag to download pre-built binaries
     version = 'v0.*',
-    -- OR build from source, requires nightly: https://rust-lang.github.io/rustup/concepts/channels.html#working-with-nightly-rust
-    -- build = 'cargo build --release',
-    -- If you use nix, you can build from source using latest nightly rust with:
-    -- build = 'nix run .#build-plugin',
-
-    ---@module 'blink.cmp'
-    ---@type blink.cmp.Config
     opts = {
-      -- 'default' for mappings similar to built-in completion
-      -- 'super-tab' for mappings similar to vscode (tab to accept, arrow keys to navigate)
-      -- 'enter' for mappings similar to 'super-tab' but with 'enter' to accept
-      -- see the "default configuration" section below for full documentation on how to define
-      -- your own keymap.
       keymap = {
         preset = 'enter',
         ['<C-y>'] = { 'select_and_accept' },
       },
 
       appearance = {
-        -- Sets the fallback highlight groups to nvim-cmp's highlight groups
-        -- Useful for when your theme doesn't support blink.cmp
-        -- will be removed in a future release
         use_nvim_cmp_as_default = true,
-        -- Set to 'mono' for 'Nerd Font Mono' or 'normal' for 'Nerd Font'
-        -- Adjusts spacing to ensure icons are aligned
         nerd_font_variant = 'mono',
       },
-      -- default list of enabled providers defined so that you can extend it
-      -- elsewhere in your config, without redefining it, via `opts_extend`
       sources = {
         default = { 'lsp', 'path', 'snippets', 'buffer' },
-        -- optionally disable cmdline completions
-        -- cmdline = {},
       },
       completion = {
+        menu = {
+          auto_show = function(ctx)
+            return ctx.mode ~= 'cmdline'
+          end,
+        },
         accept = {
           -- experimental auto-brackets support
           auto_brackets = {
             enabled = true,
           },
         },
-        menu = {
-          draw = {
-            treesitter = true,
-          },
-        },
+        -- menu = {
+        --   draw = {
+        --     treesitter = [],
+        --   },
+        -- },
         documentation = {
           auto_show = true,
           auto_show_delay_ms = 200,
@@ -557,11 +438,7 @@ require('lazy').setup({
           enabled = vim.g.ai_cmp,
         },
       },
-      -- experimental signature help support
-      -- signature = { enabled = true }
     },
-    -- allows extending the providers array elsewhere in your config
-    -- without having to redefine it
     opts_extend = { 'sources.default' },
   },
 
@@ -674,3 +551,21 @@ require('lazy').setup({
 
   { import = 'custom.plugins' },
 }, {})
+
+vim.api.nvim_create_user_command('FormatDisable', function(args)
+  if args.bang then
+    -- FormatDisable! will disable formatting just for this buffer
+    vim.b.disable_autoformat = true
+  else
+    vim.g.disable_autoformat = true
+  end
+end, {
+  desc = 'Disable autoformat-on-save',
+  bang = true,
+})
+vim.api.nvim_create_user_command('FormatEnable', function()
+  vim.b.disable_autoformat = false
+  vim.g.disable_autoformat = false
+end, {
+  desc = 'Re-enable autoformat-on-save',
+})

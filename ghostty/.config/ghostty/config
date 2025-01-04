@@ -1,0 +1,11 @@
+theme = tokyonight
+
+font-size = 20
+
+macos-titlebar-style = hidden
+
+keybind = cmd+g=toggle_quick_terminal
+
+font-feature = -calt
+font-feature = -liga
+font-feature = -dlig

@@ -26,9 +26,9 @@ alias vimrc='vim ~/.config/nvim/init.vim'
 alias zshrc='vim ~/dotfiles/.zshrc'
 
 # Exa overrides for ls
-alias ls='exa --icons'
-alias l='exa -1 --git --icons --sort=type'
-alias la='exa -a --git --icons --sort=type'
+alias ls='eza --icons'
+alias l='eza -1 --git --icons --sort=type'
+alias la='eza -a --git --icons --sort=type'
 
 # Alias for fuzzy finding git branches
 alias gsf='git branch | grep -v "^*" | fzf --height=20% --reverse --info=inline | xargs git switch'
