@@ -5,6 +5,7 @@
 return {
   {
     'nvim-tree/nvim-tree.lua',
+    event = 'VeryLazy',
     dependencies = { 'echasnovski/mini.nvim' },
     config = function()
       require('nvim-tree').setup()
@@ -16,6 +17,7 @@ return {
 
   {
     'mfussenegger/nvim-lint',
+    event = 'VeryLazy',
     config = function()
       require('lint').linters_by_ft = {
         go = { 'golangcilint' },
@@ -32,6 +34,7 @@ return {
 
   {
     'windwp/nvim-ts-autotag',
+    event = 'VeryLazy',
     config = true,
   },
 

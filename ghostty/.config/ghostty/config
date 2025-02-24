@@ -5,6 +5,8 @@ font-size = 20
 macos-titlebar-style = hidden
 
 keybind = cmd+g=toggle_quick_terminal
+keybind = ctrl+shift+v=paste_from_clipboard
+keybind = ctrl+shift+c=copy_to_clipboard
 
 font-feature = -calt
 font-feature = -liga
