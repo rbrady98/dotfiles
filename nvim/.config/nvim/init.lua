@@ -1,4 +1,3 @@
---  NOTE: Must happen before plugins are loaded (otherwise wrong leader will be used)
 vim.g.mapleader = ' '
 
 vim.g.maplocalleader = ' '
@@ -86,6 +85,10 @@ vim.keymap.set('n', '<C-l>', '<C-w><C-l>', { desc = 'Move focus to the right win
 vim.keymap.set('n', '<C-j>', '<C-w><C-j>', { desc = 'Move focus to the lower window' })
 vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper window' })
 
+-- Move to next/previous quickfix item
+vim.keymap.set('n', ']c', '<cmd>cnext<cr>', { desc = 'Move to next quickfix item' })
+vim.keymap.set('n', '[c', '<cmd>cprev<cr>', { desc = 'Move to previous quickfix item' })
+
 -- Highlight when yanking (copying) text
 vim.api.nvim_create_autocmd('TextYankPost', {
   group = vim.api.nvim_create_augroup('kickstart-highlight-yank', { clear = true }),
@@ -166,8 +169,8 @@ require('lazy').setup({
           file_icons = 'mini',
         },
         lsp = {
-          jump_to_single_result = true,
-          jump_to_single_result_action = actions.file_edit,
+          jump1 = true,
+          jump1_action = actions.file_edit,
         },
         previewers = {
           builtin = {
@@ -306,7 +309,11 @@ require('lazy').setup({
         },
 
         -- JS/TS tools
-        ts_ls = {},
+        ts_ls = {
+          init_options = {
+            maxTsServerMemory = 8192,
+          },
+        },
         eslint = {},
         jsonls = {},
         prettierd = {},
@@ -349,13 +356,14 @@ require('lazy').setup({
         handlers = {
           function(server_name)
             local server = servers[server_name] or {}
+            server.capabilities = require('blink.cmp').get_lsp_capabilities(server.capabilities)
+            server.handlers = {
+              ['textDocument/hover'] = vim.lsp.with(vim.lsp.handlers.hover, {
+                silent = true,
+              }),
+            }
 
-            require('lspconfig')[server_name].setup({
-              cmd = server.cmd,
-              settings = server.settings,
-              filetypes = server.filetypes,
-              capabilities = require('blink.cmp').get_lsp_capabilities(server.capabilities),
-            })
+            require('lspconfig')[server_name].setup(server)
           end,
         },
       })
@@ -398,7 +406,6 @@ require('lazy').setup({
         preset = 'enter',
         ['<C-y>'] = { 'select_and_accept' },
       },
-
       appearance = {
         use_nvim_cmp_as_default = true,
         nerd_font_variant = 'mono',
@@ -407,25 +414,12 @@ require('lazy').setup({
         default = { 'lsp', 'path', 'snippets', 'buffer' },
       },
       completion = {
-        menu = {
-          auto_show = function(ctx)
-            return ctx.mode ~= 'cmdline'
-          end,
+        list = {
+          selection = { preselect = false, auto_insert = true },
         },
-        accept = {
-          -- experimental auto-brackets support
-          auto_brackets = {
-            enabled = true,
-          },
-        },
-        -- menu = {
-        --   draw = {
-        --     treesitter = [],
-        --   },
-        -- },
         documentation = {
           auto_show = true,
-          auto_show_delay_ms = 200,
+          auto_show_delay_ms = 500,
         },
         ghost_text = {
           enabled = vim.g.ai_cmp,
@@ -437,10 +431,17 @@ require('lazy').setup({
 
   {
     'folke/tokyonight.nvim',
-    lazy = false, -- make sure we load this during startup if it is your main colorscheme
-    priority = 1000, -- make sure to load this before all the other start plugins
+    lazy = false,
+    priority = 1000,
     config = function()
-      vim.cmd.colorscheme('tokyonight-moon')
+      require('tokyonight').setup({
+        style = 'night',
+        on_colors = function(colors)
+          colors.bg = '#000000'
+        end,
+      })
+
+      vim.cmd.colorscheme('tokyonight')
       vim.api.nvim_set_hl(0, 'CursorLineNr', { link = '@keyword' })
     end,
   },
