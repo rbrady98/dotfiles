@@ -106,8 +106,6 @@ end ---@diagnostic disable-next-line: undefined-field
 vim.opt.rtp:prepend(lazypath)
 
 require('lazy').setup({
-  'tpope/vim-sleuth', -- Detect tabstop and shiftwidth automatically
-
   { -- Adds git related signs to the gutter, as well as utilities for managing changes
     'lewis6991/gitsigns.nvim',
     event = 'VeryLazy',
@@ -213,10 +211,10 @@ require('lazy').setup({
     keys = {
       { '<leader>fb', '<cmd>FzfLua buffers sort_mru=true sort_lastused=true<cr>', desc = 'Buffers' },
       { '<leader>ff', '<cmd>FzfLua files<cr>', desc = 'Find Files' },
-      { '<leader>fg', '<cmd>FzfLua git_files<cr>', desc = 'Find Files (git-files)' },
+      { '<leader>fgf', '<cmd>FzfLua git_files<cr>', desc = 'Find Files (git-files)' },
       { '<leader>fr', '<cmd>FzfLua oldfiles<cr>', desc = 'Recent' },
-      { '<leader>gs', '<cmd>FzfLua git_status<CR>', desc = 'Status' },
-      { '<leader>sg', '<cmd>FzfLua live_grep<CR>', desc = 'Status' },
+      { '<leader>fgs', '<cmd>FzfLua git_status<CR>', desc = 'Git Status' },
+      { '<leader>sg', '<cmd>FzfLua live_grep<CR>', desc = 'Live Grep' },
     },
   },
 
@@ -407,7 +405,6 @@ require('lazy').setup({
         ['<C-y>'] = { 'select_and_accept' },
       },
       appearance = {
-        use_nvim_cmp_as_default = true,
         nerd_font_variant = 'mono',
       },
       sources = {
