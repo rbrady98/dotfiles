@@ -58,6 +58,7 @@ vim.opt.cursorline = true
 
 -- Set indents to 4
 vim.opt.tabstop = 4
+vim.opt.shiftwidth = 0
 
 -- Minimal number of screen lines to keep above and below the cursor.
 vim.opt.scrolloff = 10
@@ -85,10 +86,6 @@ vim.keymap.set('n', '<C-l>', '<C-w><C-l>', { desc = 'Move focus to the right win
 vim.keymap.set('n', '<C-j>', '<C-w><C-j>', { desc = 'Move focus to the lower window' })
 vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper window' })
 
--- Move to next/previous quickfix item
-vim.keymap.set('n', ']c', '<cmd>cnext<cr>', { desc = 'Move to next quickfix item' })
-vim.keymap.set('n', '[c', '<cmd>cprev<cr>', { desc = 'Move to previous quickfix item' })
-
 -- Highlight when yanking (copying) text
 vim.api.nvim_create_autocmd('TextYankPost', {
   group = vim.api.nvim_create_augroup('kickstart-highlight-yank', { clear = true }),
@@ -106,8 +103,6 @@ end ---@diagnostic disable-next-line: undefined-field
 vim.opt.rtp:prepend(lazypath)
 
 require('lazy').setup({
-  'tpope/vim-sleuth', -- Detect tabstop and shiftwidth automatically
-
   { -- Adds git related signs to the gutter, as well as utilities for managing changes
     'lewis6991/gitsigns.nvim',
     event = 'VeryLazy',
@@ -220,155 +215,7 @@ require('lazy').setup({
     },
   },
 
-  { -- LSP Configuration & Plugins
-    'neovim/nvim-lspconfig',
-    event = 'VeryLazy',
-    dependencies = {
-      -- Automatically install LSPs and related tools to stdpath for neovim
-      'williamboman/mason.nvim',
-      'williamboman/mason-lspconfig.nvim',
-      'WhoIsSethDaniel/mason-tool-installer.nvim',
-      'saghen/blink.cmp',
-
-      -- Useful status updates for LSP.
-      { 'j-hui/fidget.nvim', opts = {} },
-    },
-    config = function()
-      vim.api.nvim_create_autocmd('LspAttach', {
-        group = vim.api.nvim_create_augroup('kickstart-lsp-attach', { clear = true }),
-        callback = function(event)
-          local map = function(keys, func, desc)
-            vim.keymap.set('n', keys, func, { buffer = event.buf, desc = 'LSP: ' .. desc })
-          end
-
-          -- Jump to the definition of the word under your cursor.
-          --  This is where a variable was first declared, or where a function is defined, etc.
-          --  To jump back, press <C-T>.
-          map('gd', require('fzf-lua').lsp_definitions, '[G]oto [D]efinition')
-
-          -- Find references for the word under your cursor.
-          map('gr', require('fzf-lua').lsp_references, '[G]oto [R]eferences')
-
-          -- Jump to the implementation of the word under your cursor.
-          --  Useful when your language has ways of declaring types without an actual implementation.
-          map('gI', require('fzf-lua').lsp_implementations, '[G]oto [I]mplementation')
-
-          -- Jump to the type of the word under your cursor.
-          --  Useful when you're not sure what type a variable is and you want to see
-          --  the definition of its *type*, not where it was *defined*.
-          map('<leader>D', require('fzf-lua').lsp_typedefs, 'Type [D]efinition')
-
-          -- Rename the variable under your cursor
-          --  Most Language Servers support renaming across files, etc.
-          map('<leader>rn', vim.lsp.buf.rename, '[R]e[n]ame')
-
-          -- Execute a code action, usually your cursor needs to be on top of an error
-          -- or a suggestion from your LSP for this to activate.
-          map('<leader>ca', require('fzf-lua').lsp_code_actions, '[C]ode [A]ction')
-
-          -- Opens a popup that displays documentation about the word under your cursor
-          --  See `:help K` for why this keymap
-          map('K', vim.lsp.buf.hover, 'Hover Documentation')
-
-          -- map('<C-h>', vim.lsp.buf.signature_help, 'Signature [H]elp')
-          vim.keymap.set('i', '<C-k>', vim.lsp.buf.signature_help, { buffer = event.buf, desc = 'LSP: Signature [H]elp' })
-
-          -- WARN: This is not Goto Definition, this is Goto Declaration.
-          --  For example, in C this would take you to the header
-          map('gD', require('fzf-lua').lsp_declarations, '[G]oto [D]eclaration')
-
-          local client = vim.lsp.get_client_by_id(event.data.client_id)
-          if client and client.server_capabilities.documentHighlightProvider then
-            vim.api.nvim_create_autocmd({ 'CursorHold', 'CursorHoldI' }, {
-              buffer = event.buf,
-              callback = vim.lsp.buf.document_highlight,
-            })
-
-            vim.api.nvim_create_autocmd({ 'CursorMoved', 'CursorMovedI' }, {
-              buffer = event.buf,
-              callback = vim.lsp.buf.clear_references,
-            })
-          end
-        end,
-      })
-
-      local servers = {
-        gopls = {
-          settings = {
-            gopls = {
-              gofumpt = true,
-              staticcheck = true,
-              analyses = {
-                unusedparam = true,
-                nilness = true,
-                useany = true,
-              },
-              directoryFilters = { '-.git', '-.vscode', '-.idea', '-.vscode-test', '-node_modules' },
-            },
-          },
-        },
-
-        -- JS/TS tools
-        ts_ls = {
-          init_options = {
-            maxTsServerMemory = 8192,
-          },
-        },
-        eslint = {},
-        jsonls = {},
-        prettierd = {},
-        svelte = {},
-        tailwindcss = {},
-
-        lua_ls = {
-          settings = {
-            Lua = {
-              runtime = { version = 'LuaJIT' },
-              workspace = {
-                checkThirdParty = false,
-                -- Tells lua_ls where to find all the Lua files that you have loaded
-                -- for your neovim configuration.
-                library = {
-                  '${3rd}/luv/library',
-                  unpack(vim.api.nvim_get_runtime_file('', true)),
-                },
-                -- If lua_ls is really slow on your computer, you can try this instead:
-                -- library = { vim.env.VIMRUNTIME },
-              },
-              -- You can toggle below to ignore Lua_LS's noisy `missing-fields` warnings
-              diagnostics = { disable = { 'missing-fields' } },
-            },
-          },
-        },
-      }
-
-      require('mason').setup()
-
-      -- You can add other tools here that you want Mason to install
-      -- for you, so that they are available from within Neovim.
-      local ensure_installed = vim.tbl_keys(servers or {})
-      vim.list_extend(ensure_installed, {
-        'stylua', -- Used to format lua code
-      })
-      require('mason-tool-installer').setup({ ensure_installed = ensure_installed })
-
-      require('mason-lspconfig').setup({
-        handlers = {
-          function(server_name)
-            local server = servers[server_name] or {}
-            server.capabilities = require('blink.cmp').get_lsp_capabilities(server.capabilities)
-            server.handlers = {
-              ['textDocument/hover'] = vim.lsp.with(vim.lsp.handlers.hover, {
-                silent = true,
-              }),
-            }
-
-            require('lspconfig')[server_name].setup(server)
-          end,
-        },
-      })
-    end,
-  },
+  { 'j-hui/fidget.nvim', opts = {} },
 
   { -- Autoformat
     'stevearc/conform.nvim',
@@ -420,9 +267,6 @@ require('lazy').setup({
         documentation = {
           auto_show = true,
           auto_show_delay_ms = 500,
-        },
-        ghost_text = {
-          enabled = vim.g.ai_cmp,
         },
       },
     },
@@ -564,4 +408,72 @@ vim.api.nvim_create_user_command('FormatEnable', function()
   vim.g.disable_autoformat = false
 end, {
   desc = 'Re-enable autoformat-on-save',
+})
+
+vim.diagnostic.config({
+  virtual_text = {
+    source = true,
+    prefix = '● ',
+  },
+  update_in_insert = false,
+  underline = true,
+  severity_sort = true,
+  float = {
+    focusable = true,
+    border = 'rounded',
+    source = true,
+  },
+})
+
+local function with(f, config)
+  return function(c)
+    return f(vim.tbl_deep_extend('force', config, c or {}))
+  end
+end
+
+vim.lsp.buf.signature_help = with(vim.lsp.buf.signature_help, {
+  border = 'rounded',
+  title_pos = 'left',
+})
+
+vim.lsp.buf.hover = with(vim.lsp.buf.hover, {
+  border = 'rounded',
+  title_pos = 'left',
+})
+
+-- enable LSPs
+vim.lsp.enable({ 'lua_ls', 'gopls', 'ts_ls', 'eslint', 'svelte_ls', 'tailwindcss_ls' })
+
+-- disable default mapping for references
+vim.keymap.del('n', 'grr')
+
+vim.api.nvim_create_autocmd('LspAttach', {
+  callback = function(args)
+    local map = function(keys, func, desc)
+      vim.keymap.set('n', keys, func, { buffer = args.buf, desc = 'LSP: ' .. desc })
+    end
+
+    map('gd', require('fzf-lua').lsp_definitions, '[G]oto [D]efinition')
+
+    map('grr', require('fzf-lua').lsp_references, '[G]oto [R]eferences')
+
+    map('gI', require('fzf-lua').lsp_implementations, '[G]oto [I]mplementation')
+
+    map('gD', require('fzf-lua').lsp_typedefs, 'Type [D]efinition')
+
+    map('<leader>ca', require('fzf-lua').lsp_code_actions, '[C]ode [A]ction')
+
+    local client = vim.lsp.get_client_by_id(args.data.client_id)
+    if client and client.server_capabilities.documentHighlightProvider then
+      vim.api.nvim_create_autocmd({ 'CursorHold', 'CursorHoldI' }, {
+        buffer = args.buf,
+        callback = vim.lsp.buf.document_highlight,
+      })
+
+      vim.api.nvim_create_autocmd({ 'CursorMoved', 'CursorMovedI' }, {
+        buffer = args.buf,
+        callback = vim.lsp.buf.clear_references,
+      })
+    end
+  end,
 })
