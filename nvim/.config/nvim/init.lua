@@ -288,6 +288,18 @@ require('lazy').setup({
       vim.api.nvim_set_hl(0, 'CursorLineNr', { link = '@keyword' })
     end,
   },
+  -- {
+  --   'sainnhe/gruvbox-material',
+  --   lazy = false,
+  --   priority = 1000,
+  --   config = function()
+  --     -- Optionally configure and load the colorscheme
+  --     -- directly inside the plugin declaration.
+  --     vim.g.gruvbox_material_foreground = 'mix'
+  --     vim.g.gruvbox_material_background = 'hard'
+  --     vim.cmd.colorscheme('gruvbox-material')
+  --   end,
+  -- },
 
   -- Highlight todo, notes, etc in comments
   { 'folke/todo-comments.nvim', event = 'VeryLazy', dependencies = { 'nvim-lua/plenary.nvim' }, opts = { signs = false } },
