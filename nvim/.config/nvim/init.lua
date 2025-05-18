@@ -278,14 +278,12 @@ require('lazy').setup({
     priority = 1000,
     config = function()
       require('tokyonight').setup({
-        style = 'night',
-        on_colors = function(colors)
-          colors.bg = '#000000'
-        end,
+        style = 'moon',
       })
 
       vim.cmd.colorscheme('tokyonight')
-      vim.api.nvim_set_hl(0, 'CursorLineNr', { link = '@keyword' })
+      local colors = require('tokyonight.colors').setup()
+      vim.api.nvim_set_hl(0, 'CursorLineNr', { fg = colors.orange })
     end,
   },
   -- {
@@ -453,7 +451,7 @@ vim.lsp.buf.hover = with(vim.lsp.buf.hover, {
 })
 
 -- enable LSPs
-vim.lsp.enable({ 'lua_ls', 'gopls', 'ts_ls', 'eslint', 'svelte_ls', 'tailwindcss_ls' })
+vim.lsp.enable({ 'lua_ls', 'gopls', 'vtsls', 'eslint', 'svelte_ls', 'tailwindcss_ls' })
 
 -- disable default mapping for references
 vim.keymap.del('n', 'grr')
@@ -473,6 +471,10 @@ vim.api.nvim_create_autocmd('LspAttach', {
     map('gD', require('fzf-lua').lsp_typedefs, 'Type [D]efinition')
 
     map('<leader>ca', require('fzf-lua').lsp_code_actions, '[C]ode [A]ction')
+
+    map('<leader>cs', function()
+      require('fzf-lua').lsp_code_actions({ context = { only = { 'source' } } })
+    end, '[C]ode [S]ource action')
 
     local client = vim.lsp.get_client_by_id(args.data.client_id)
     if client and client.server_capabilities.documentHighlightProvider then
