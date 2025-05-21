@@ -278,12 +278,13 @@ require('lazy').setup({
     priority = 1000,
     config = function()
       require('tokyonight').setup({
-        style = 'moon',
+        style = 'night',
       })
 
       vim.cmd.colorscheme('tokyonight')
       local colors = require('tokyonight.colors').setup()
       vim.api.nvim_set_hl(0, 'CursorLineNr', { fg = colors.orange })
+      vim.api.nvim_set_hl(0, 'WinSeparator', { fg = colors.blue })
     end,
   },
   -- {
@@ -421,8 +422,26 @@ end, {
 
 vim.diagnostic.config({
   virtual_text = {
-    source = true,
-    prefix = '● ',
+    enabled = true,
+    prefix = function(diagnostic)
+      if diagnostic.severity == vim.diagnostic.severity.ERROR then
+        return '🭰× '
+      elseif diagnostic.severity == vim.diagnostic.severity.WARN then
+        return '🭰▲ '
+      else
+        return '🭰• '
+      end
+    end,
+    suffix = '🭵',
+  },
+  underline = true,
+  signs = {
+    text = {
+      [vim.diagnostic.severity.ERROR] = ' ×',
+      [vim.diagnostic.severity.WARN] = ' ▲',
+      [vim.diagnostic.severity.HINT] = ' •',
+      [vim.diagnostic.severity.INFO] = ' •',
+    },
   },
   update_in_insert = false,
   underline = true,
