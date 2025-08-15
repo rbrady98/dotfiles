@@ -13,9 +13,6 @@ vim.opt.relativenumber = true
 -- Enable mouse mode, can be useful for resizing splits for example!
 vim.opt.mouse = 'a'
 
--- Hide initial buffer
-vim.opt.hidden = false
-
 -- Don't show the mode, since it's already in status line
 vim.opt.showmode = false
 
@@ -143,6 +140,8 @@ require('lazy').setup({
       local config = require('fzf-lua.config')
       local actions = require('fzf-lua.actions')
 
+      require('fzf-lua').register_ui_select()
+
       -- Quickfix
       config.defaults.keymap.fzf['ctrl-q'] = 'select-all+accept'
       config.defaults.keymap.fzf['ctrl-u'] = 'half-page-up'
@@ -239,6 +238,7 @@ require('lazy').setup({
         html = { 'prettierd', 'prettier', stop_after_first = true },
         css = { 'prettierd', 'prettier', stop_after_first = true },
         markdown = { 'prettierd', 'prettier', stop_after_first = true },
+        yaml = { 'prettierd', 'prettier', stop_after_first = true },
       },
     },
   },
@@ -287,21 +287,14 @@ require('lazy').setup({
       vim.api.nvim_set_hl(0, 'WinSeparator', { fg = colors.blue })
     end,
   },
-  -- {
-  --   'sainnhe/gruvbox-material',
-  --   lazy = false,
-  --   priority = 1000,
-  --   config = function()
-  --     -- Optionally configure and load the colorscheme
-  --     -- directly inside the plugin declaration.
-  --     vim.g.gruvbox_material_foreground = 'mix'
-  --     vim.g.gruvbox_material_background = 'hard'
-  --     vim.cmd.colorscheme('gruvbox-material')
-  --   end,
-  -- },
 
-  -- Highlight todo, notes, etc in comments
-  { 'folke/todo-comments.nvim', event = 'VeryLazy', dependencies = { 'nvim-lua/plenary.nvim' }, opts = { signs = false } },
+ -- Highlight todo, notes, etc in comments
+  {
+    'folke/todo-comments.nvim',
+    event = 'VeryLazy',
+    dependencies = { 'nvim-lua/plenary.nvim' },
+    opts = { signs = false },
+  },
 
   { -- Collection of various small independent plugins/modules
     'echasnovski/mini.nvim',
@@ -444,7 +437,6 @@ vim.diagnostic.config({
     },
   },
   update_in_insert = false,
-  underline = true,
   severity_sort = true,
   float = {
     focusable = true,
@@ -470,7 +462,7 @@ vim.lsp.buf.hover = with(vim.lsp.buf.hover, {
 })
 
 -- enable LSPs
-vim.lsp.enable({ 'lua_ls', 'gopls', 'vtsls', 'eslint', 'svelte_ls', 'tailwindcss_ls' })
+vim.lsp.enable({ 'lua_ls', 'gopls', 'ts_ls', 'eslint', 'svelte_ls', 'tailwindcss_ls' })
 
 -- disable default mapping for references
 vim.keymap.del('n', 'grr')

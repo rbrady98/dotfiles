@@ -9,7 +9,8 @@ return {
       analyses = {
         unusedparam = true,
         nilness = true,
-        useany = true,
+        modernize = true,
+        unusedfunc = true,
       },
       directoryFilters = { '-.git', '-.vscode', '-.idea', '-.vscode-test', '-node_modules' },
     },

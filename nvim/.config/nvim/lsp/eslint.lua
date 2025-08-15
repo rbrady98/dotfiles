@@ -8,7 +8,6 @@ return {
     'typescriptreact',
     'typescript.tsx',
     'vue',
-    'svelte',
     'astro',
   },
   root_markers = {
