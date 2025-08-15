@@ -1,5 +1,5 @@
 return {
-  cmd = { 'svelteserver', '--stdio' },
-  filetypes = { 'svelte' },
-  root_markers = { 'package.json', '.git' },
+	cmd = { "svelteserver", "--stdio" },
+	filetypes = { "svelte" },
+	root_markers = { "package.json", ".git" },
 }
