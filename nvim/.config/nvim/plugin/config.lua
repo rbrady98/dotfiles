@@ -1,6 +1,6 @@
 local opt = vim.opt
 
-opt.signcolumn = "yes:1" -- Always show sign column
+opt.signcolumn = 'yes:1' -- Always show sign column
 opt.termguicolors = true -- Enable true colors
 opt.ignorecase = true -- Ignore case in search
 opt.swapfile = false -- Disable swap files
@@ -10,7 +10,7 @@ opt.tabstop = 4 -- Number of spaces for a tab
 opt.softtabstop = 4 -- Number of spaces for a tab when editing
 opt.shiftwidth = 4 -- Number of spaces for autoindent
 opt.shiftround = true -- Round indent to multiple of shiftwidth
-opt.listchars = "tab: ,trail:·" -- Characters to show for tabs, spaces, and end of line
+opt.listchars = 'tab: ,trail:·' -- Characters to show for tabs, spaces, and end of line
 opt.list = true -- Show whitespace characters
 opt.number = true -- Show line numbers
 opt.relativenumber = true -- Show relative line numbers
@@ -19,15 +19,15 @@ opt.wrap = false -- Disable line wrapping
 opt.cursorline = true -- Highlight the current line
 opt.scrolloff = 10 -- Keep 10 lines above and below the cursor
 opt.sidescrolloff = 10 -- Keep 10 lines to the right of the cursor
-opt.inccommand = "nosplit" -- Shows the effects of a command incrementally in the buffer
-opt.undodir = os.getenv("HOME") .. "/.vim/undodir" -- Directory for undo files
+opt.inccommand = 'nosplit' -- Shows the effects of a command incrementally in the buffer
+opt.undodir = os.getenv('HOME') .. '/.vim/undodir' -- Directory for undo files
 opt.undofile = true -- Enable persistent undo
-opt.completeopt = { "menuone", "popup", "noinsert" } -- Options for completion menu
-opt.winborder = "rounded" -- Use rounded borders for windows
+opt.completeopt = { 'menuone', 'popup', 'noinsert' } -- Options for completion menu
+opt.winborder = 'rounded' -- Use rounded borders for windows
 opt.hlsearch = true -- Enable highlighting of search results
 opt.splitright = true
 opt.splitbelow = true
 
-vim.cmd.filetype("plugin indent on") -- Enable filetype detection, plugins, and indentation
+vim.cmd.filetype('plugin indent on') -- Enable filetype detection, plugins, and indentation
 
-vim.cmd.colorscheme("nightfox")
+vim.cmd.colorscheme('kanagawa')

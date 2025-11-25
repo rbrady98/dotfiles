@@ -1,33 +1,33 @@
-vim.lsp.enable({ "lua_ls", "gopls", "vtsls", "eslint", "svelte_ls", "tailwindcss_ls" })
+vim.lsp.enable({ 'lua_ls', 'gopls', 'ts_ls', 'eslint', 'svelte_ls', 'tailwindcss', 'biome' })
 
 vim.diagnostic.config({
-	virtual_text = {
-		enabled = true,
-		prefix = function(diagnostic)
-			if diagnostic.severity == vim.diagnostic.severity.ERROR then
-				return "🭰× "
-			elseif diagnostic.severity == vim.diagnostic.severity.WARN then
-				return "🭰▲ "
-			else
-				return "🭰• "
-			end
-		end,
-		suffix = "🭵",
-	},
-	underline = true,
-	signs = {
-		text = {
-			[vim.diagnostic.severity.ERROR] = " ×",
-			[vim.diagnostic.severity.WARN] = " ▲",
-			[vim.diagnostic.severity.HINT] = " •",
-			[vim.diagnostic.severity.INFO] = " •",
-		},
-	},
-	update_in_insert = false,
-	severity_sort = true,
-	float = {
-		focusable = true,
-		border = "rounded",
-		source = true,
-	},
+  virtual_text = {
+    enabled = true,
+    prefix = function(diagnostic)
+      if diagnostic.severity == vim.diagnostic.severity.ERROR then
+        return '🭰× '
+      elseif diagnostic.severity == vim.diagnostic.severity.WARN then
+        return '🭰▲ '
+      else
+        return '🭰• '
+      end
+    end,
+    suffix = '🭵',
+  },
+  underline = true,
+  signs = {
+    text = {
+      [vim.diagnostic.severity.ERROR] = ' ×',
+      [vim.diagnostic.severity.WARN] = ' ▲',
+      [vim.diagnostic.severity.HINT] = ' •',
+      [vim.diagnostic.severity.INFO] = ' •',
+    },
+  },
+  update_in_insert = false,
+  severity_sort = true,
+  float = {
+    focusable = true,
+    border = 'rounded',
+    source = true,
+  },
 })

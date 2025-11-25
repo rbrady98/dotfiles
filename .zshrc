@@ -86,3 +86,6 @@ case ":$PATH:" in
   *) export PATH="$PNPM_HOME:$PATH" ;;
 esac
 # pnpm end
+#
+## Set global node memory higher
+export NODE_OPTIONS="--max-old-space-size=8192 --no-experimental-strip-types"
