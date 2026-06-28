@@ -9,6 +9,13 @@ return {
     'typescriptreact',
     'typescript.tsx',
   },
+  settings = {
+    typescript = {
+      tsserver = {
+        maxTsServerMemory = 8192,
+      },
+    },
+  },
   root_dir = function(bufnr, on_dir)
     -- The project root is where the LSP can be started from
     -- As stated in the documentation above, this LSP supports monorepos and simple projects.

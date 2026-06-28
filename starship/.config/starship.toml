@@ -41,12 +41,6 @@ style = "cyan"
 [git_metrics]
 disabled = false
 
-# [time]
-# disabled = false
-# use_12hr = true
-# style = "white"
-# format = "[$time]($style)  "
-
 [cmd_duration]
 format = "[$duration]($style) "
 style = "yellow"

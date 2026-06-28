@@ -10,7 +10,10 @@ require('kanagawa').setup({
   statementStyle = { bold = false },
   theme = 'wave',
 })
--- hello
+
+vim.pack.add({
+  { src = 'https://github.com/vague2k/vague.nvim' },
+})
 
 vim.pack.add({
   { src = 'https://github.com/echasnovski/mini.nvim' },
@@ -65,8 +68,47 @@ vim.pack.add({
   { src = 'https://github.com/saghen/blink.cmp', version = vim.version.range('^1') },
 }, { load = true })
 
+local source_priority = {
+  lsp = 4,
+  snippets = 3,
+  path = 2,
+  buffer = 1,
+}
+
 require('blink.cmp').setup({
-  fuzzy = { implementation = 'prefer_rust_with_warning' },
+  fuzzy = {
+    implementation = 'prefer_rust_with_warning',
+    sorts = {
+      function(a, b)
+        -- 1. Explicitly check for struct fields (LSP Kind 5)
+        local a_is_field = a.kind == 5
+        local b_is_field = b.kind == 5
+
+        if a_is_field and not b_is_field then
+          return true
+        end
+        if not a_is_field and b_is_field then
+          return false
+        end
+
+        local a_priority = source_priority[a.source_id] or 0
+        local b_priority = source_priority[b.source_id] or 0
+
+        if a_priority ~= b_priority then
+          return a_priority > b_priority
+        end
+
+        -- 3. Return nil to fall through to standard blink sorting
+        -- This happens if both are fields, or if they are from the same source
+        return nil
+      end,
+
+      'score',
+      'sort_text',
+      'kind',
+      'label',
+    },
+  },
   keymap = {
     preset = 'enter',
   },
@@ -124,12 +166,27 @@ require('fzf-lua').setup({
 require('fzf-lua').register_ui_select()
 
 vim.pack.add({
-  { src = 'https://github.com/nvim-treesitter/nvim-treesitter', version = 'master' },
-  { src = 'https://github.com/nvim-treesitter/nvim-treesitter-textobjects' },
+  { src = 'https://github.com/nvim-treesitter/nvim-treesitter', version = 'main', build = ':TSUpdate' },
+  { src = 'https://github.com/nvim-treesitter/nvim-treesitter-textobjects', version = 'main' },
 }, { load = true })
 
-require('nvim-treesitter.configs').setup({
-  ensure_installed = {
+local setup_treesitter = function()
+  require('nvim-treesitter-textobjects').setup({
+    select = {
+      enable = true,
+      lookahead = true,
+      keymaps = {
+        ['af'] = '@function.outer',
+        ['if'] = '@function.inner',
+        ['ap'] = '@parameter.outer',
+        ['ip'] = '@parameter.inner',
+      },
+    },
+  })
+
+  local treesitter = require('nvim-treesitter')
+  treesitter.setup({})
+  local ensure_installed = {
     'bash',
     'html',
     'lua',
@@ -149,24 +206,35 @@ require('nvim-treesitter.configs').setup({
     'gitcommit',
     'diff',
     'git_rebase',
-  },
+  }
 
-  auto_install = true,
-  highlight = { enable = true },
-  indent = { enable = true },
-  textobjects = {
-    select = {
-      enable = true,
-      lookahead = true,
-      keymaps = {
-        ['af'] = '@function.outer',
-        ['if'] = '@function.inner',
-        ['ap'] = '@parameter.outer',
-        ['ip'] = '@parameter.inner',
-      },
-    },
-  },
-})
+  local config = require('nvim-treesitter.config')
+
+  local already_installed = config.get_installed()
+  local parsers_to_install = {}
+
+  for _, parser in ipairs(ensure_installed) do
+    if not vim.tbl_contains(already_installed, parser) then
+      table.insert(parsers_to_install, parser)
+    end
+  end
+
+  if #parsers_to_install > 0 then
+    treesitter.install(parsers_to_install)
+  end
+
+  local group = vim.api.nvim_create_augroup('TreeSitterConfig', { clear = true })
+  vim.api.nvim_create_autocmd('FileType', {
+    group = group,
+    callback = function(args)
+      if vim.list_contains(treesitter.get_installed(), vim.treesitter.language.get_lang(args.match)) then
+        vim.treesitter.start(args.buf)
+      end
+    end,
+  })
+end
+
+setup_treesitter()
 
 vim.pack.add({
   { src = 'https://github.com/j-hui/fidget.nvim' },
@@ -197,7 +265,7 @@ require('conform').setup({
     html = { 'prettier', stop_after_first = true },
     css = { 'prettier', stop_after_first = true },
     markdown = { 'prettier', stop_after_first = true },
-    yaml = { 'prettier', stop_after_first = true },
+    yaml = { 'prettier' },
   },
 })
 

@@ -1,18 +1,29 @@
+DISABLE_AUTO_UPDATE="true"
+DISABLE_MAGIC_FUNCTIONS="true"
+DISABLE_COMPFIX="true"
+
+# Smarter completion initialization
+autoload -Uz compinit
+if [ "$(date +'%j')" != "$(stat -f '%Sm' -t '%j' ~/.zcompdump 2>/dev/null)" ]; then
+    compinit
+else
+    compinit -C
+fi
+
 export ZSH="$HOME/.oh-my-zsh"
 
 # Path
-export PATH=$PATH:~/go/bin
+export PATH=$PATH:~/go/bin:$HOME/.local/bin
 
 # FZF command
-RG="rg --no-ignore --hidden -g '!.git/'"
+RG="rg --no-ignore --hidden -g '!.git/' -g '!node_modules/'"
+FD="fd -H -E 'node_modules/' -E '.git/'"
 export FZF_DEFAULT_COMMAND="$RG ''"
-export FZF_CTRL_T_COMMAND="$RG --files """
+export FZF_CTRL_T_COMMAND="$FD -t d ''"
 
 # Plugins
 plugins=(
     git
-    sudo
-    command-not-found
     zsh-syntax-highlighting
 )
 
@@ -49,36 +60,6 @@ if [ -f '/Users/bian/google-cloud-sdk/path.zsh.inc' ]; then . '/Users/bian/googl
 # The next line enables shell command completion for gcloud.
 if [ -f '/Users/bian/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/bian/google-cloud-sdk/completion.zsh.inc'; fi
 
-export NVM_DIR="$HOME/.nvm"
-[ -s "/opt/homebrew/opt/nvm/nvm.sh" ] && \. "/opt/homebrew/opt/nvm/nvm.sh"  # This loads nvm
-[ -s "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm" ] && \. "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm"  # This loads nvm bash_completion
-
-[[ -s "/Users/bian/.gvm/scripts/gvm" ]] && source "/Users/bian/.gvm/scripts/gvm"
-
-# open tmux session using fzf
-tmux_fzf() {
-  session=$(tmux ls -F "#S" | fzf --height=15)
-  tmux a -t $session
-}
-
-# tmux aliases
-alias tma=tmux_fzf
-alias tmns="tmux new -s"
-
-function nvims() {
-  items=("default" "pluton" "lazy")
-  config=$(printf "%s\n" "${items[@]}" | fzf --prompt=" Neovim Config " --height=~50% --layout=reverse --border --exit-0)
-  if [[ -z $config ]]; then
-    echo "Nothing selected"
-    return 0
-  elif [[ $config == "default" ]]; then
-    config=""
-  fi
-  NVIM_APPNAME=$config nvim $@
-}
-
-alias vp='NVIM_APPNAME=pluton nvim $@'
-
 # pnpm
 export PNPM_HOME="/Users/bian/Library/pnpm"
 case ":$PATH:" in
@@ -89,3 +70,14 @@ esac
 #
 ## Set global node memory higher
 export NODE_OPTIONS="--max-old-space-size=8192 --no-experimental-strip-types"
+
+source /Users/bian/.daytona.completion_script.zsh
+
+# Claude cant use zoxide
+[ -z "$DISABLE_ZOXIDE" ] && eval "$(zoxide init --cmd cd zsh)"
+
+# fnm
+FNM_PATH="/opt/homebrew/opt/fnm/bin"
+if [ -d "$FNM_PATH" ]; then
+  eval "$(fnm env --shell zsh)"
+fi
