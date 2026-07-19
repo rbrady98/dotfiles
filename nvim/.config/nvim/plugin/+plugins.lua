@@ -13,6 +13,7 @@ require('kanagawa').setup({
 
 vim.pack.add({
   { src = 'https://github.com/vague2k/vague.nvim' },
+  { src = 'https://github.com/folke/tokyonight.nvim' },
 })
 
 vim.pack.add({

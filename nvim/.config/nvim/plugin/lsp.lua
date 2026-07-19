@@ -1,5 +1,5 @@
 -- vim.lsp.enable({ 'lua_ls', 'gopls', 'tsgo', 'eslint', 'svelte_ls', 'tailwindcss', 'biome', 'cssls' })
-vim.lsp.enable({ 'lua_ls', 'gopls', 'tsgo', 'eslint', 'svelte_ls', 'tailwindcss', 'cssls' })
+vim.lsp.enable({ 'lua_ls', 'gopls', 'tsgo', 'eslint', 'svelte_ls', 'tailwindcss', 'cssls', 'tofu_ls' })
 
 vim.diagnostic.config({
   virtual_text = {
